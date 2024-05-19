@@ -32,6 +32,9 @@ importers:
       '@angular/router':
         specifier: ^17.3.0
         version: 17.3.8(@angular/common@17.3.8(@angular/core@17.3.8(rxjs@7.8.1)(zone.js@0.14.5))(rxjs@7.8.1))(@angular/core@17.3.8(rxjs@7.8.1)(zone.js@0.14.5))(@angular/platform-browser@17.3.8(@angular/animations@17.3.8(@angular/core@17.3.8(rxjs@7.8.1)(zone.js@0.14.5)))(@angular/common@17.3.8(@angular/core@17.3.8(rxjs@7.8.1)(zone.js@0.14.5))(rxjs@7.8.1))(@angular/core@17.3.8(rxjs@7.8.1)(zone.js@0.14.5)))(rxjs@7.8.1)
+      big.js:
+        specifier: ^6.2.1
+        version: 6.2.1
       rxjs:
         specifier: ~7.8.0
         version: 7.8.1
@@ -51,6 +54,9 @@ importers:
       '@angular/compiler-cli':
         specifier: ^17.3.0
         version: 17.3.8(@angular/compiler@17.3.8(@angular/core@17.3.8(rxjs@7.8.1)(zone.js@0.14.5)))(typescript@5.4.5)
+      '@types/big.js':
+        specifier: ^6.2.2
+        version: 6.2.2
       '@types/jasmine':
         specifier: ~5.1.0
         version: 5.1.4
@@ -1328,6 +1334,9 @@ packages:
     resolution: {integrity: sha512-92F7/SFyufn4DXsha9+QfKnN03JGqtMFMXgSHbZOo8JG59WkTni7UzAouNQDf7AuP9OAMxVOPQcqG3sB7w+kkg==}
     engines: {node: ^16.14.0 || >=18.0.0}
 
+  '@types/big.js@6.2.2':
+    resolution: {integrity: sha512-e2cOW9YlVzFY2iScnGBBkplKsrn2CsObHQ2Hiw4V1sSyiGbgWL8IyqE3zFi1Pt5o1pdAtYkDAIsF3KKUPjdzaA==}
+
   '@types/body-parser@1.19.5':
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
 
@@ -1617,6 +1626,9 @@ packages:
 
   big.js@5.2.2:
     resolution: {integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==}
+
+  big.js@6.2.1:
+    resolution: {integrity: sha512-bCtHMwL9LeDIozFn+oNhhFoq+yQ3BNdnsLSASUxLciOb1vgvpHsIO1dsENiGMgbb4SkP5TrzWzRiLddn8ahVOQ==}
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
@@ -5305,6 +5317,8 @@ snapshots:
       '@tufjs/canonical-json': 2.0.0
       minimatch: 9.0.4
 
+  '@types/big.js@6.2.2': {}
+
   '@types/body-parser@1.19.5':
     dependencies:
       '@types/connect': 3.4.38
@@ -5652,6 +5666,8 @@ snapshots:
   batch@0.6.1: {}
 
   big.js@5.2.2: {}
+
+  big.js@6.2.1: {}
 
   binary-extensions@2.3.0: {}
 

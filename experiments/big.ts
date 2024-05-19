@@ -5,7 +5,9 @@ const n2 = 0.2
 console.log(`standard JS: ${n1} + ${n2} = ${n1 + n2}`)
 
 const b1 = Big(n1)
-console.log(`Big.js: ${b1} + ${n2} = ${b1.plus(n2)}`)
+const res = b1.plus(n2)
+console.log(`Big.js: ${b1} + ${n2} = ${res}`)
+console.log("res:", `${res}`, res, typeof res)
 console.log('')
 
 const coordToPixelJS = {
@@ -43,3 +45,6 @@ const offsetBig = {
 
 console.log(`Big.js offset: ${JSON.stringify(offsetBig)}`)
 console.log('')
+
+const width = Big(100).toNumber()
+console.log(width, typeof width)

@@ -5,6 +5,7 @@ import { GridUtilityComponent } from '../shared/grid-utility-component';
 import { Position } from '../shared/interfaces/position';
 import { HexCoord } from '../shared/interfaces/hex-coord';
 import { NgFor } from '@angular/common';
+import Big from 'big.js';
 
 @Component({
   selector: 'app-grid',
@@ -16,25 +17,35 @@ import { NgFor } from '@angular/common';
 export class GridComponent extends GridUtilityComponent implements OnChanges {
   @Input({ required: true }) radius!: number;
   @Input({ required: true }) hexWidth!: number;
-  hexHeight: number = 0;
+  // hexHeight: number = 0;
+  hexHeight!: Big;
 
-  gridWidth!: number;
-  gridHeight!: number;
+  // gridWidth!: number;
+  gridWidth!: Big;
+  // gridHeight!: number;
+  gridHeight!: Big;
 
   setGridWidth(): void {
-    this.gridWidth = this.hexWidth + (this.hexWidth * 1.5 * this.radius)
+    // this.gridWidth = this.hexWidth + (this.hexWidth * 1.5 * this.radius)
+    this.gridWidth = Big(this.hexWidth).plus(Big(this.hexWidth).times(1.5).times(this.radius));
   }
 
   setGridHeight(): void {
-    this.gridHeight = this.hexHeight + (this.hexHeight * 2 * this.radius)
+    // this.gridHeight = this.hexHeight + (this.hexHeight * 2 * this.radius)
+    this.gridHeight = this.hexHeight.plus(this.hexHeight.times(2).times(this.radius));
   }
 
   offset!: Position;
 
   setOffset(): void {
+    // this.offset = {
+    //   x: this.gridWidth / 2,
+    //   y: this.gridWidth * this.coordToPixel.f2 / 2
+    // };
+
     this.offset = {
-      x: this.gridWidth / 2,
-      y: this.gridWidth * this.coordToPixel.f2 / 2
+      x: this.gridWidth.div(2),
+      y: this.gridWidth.times(this.coordToPixel.f2).div(2)
     };
   }
 
@@ -63,8 +74,7 @@ export class GridComponent extends GridUtilityComponent implements OnChanges {
     this.setOffset();
 
     this.setHexCoords();
-    console.log(this.hexCoords)
 
-    this.setStyleVariables(this.gridWidth, this.gridHeight);
+    this.setStyleVariables(this.gridWidth.toString(), this.gridHeight.toString());
   }
 }

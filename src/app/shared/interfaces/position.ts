@@ -1,4 +1,6 @@
+import Big from 'big.js';
+
 export interface Position {
-    x: number;
-    y: number;
+    x: Big;
+    y: Big;
 }
