@@ -4,9 +4,9 @@ import { distinctUntilChanged } from 'rxjs';
 import { GameSetupService } from '@app/shared/services/game-setup';
 import { HexManagementService } from '@app/shared/services/hex-management';
 import { DIRECTION, DIRECTIONS } from '@app/shared/constants';
-import { compareHexData, isHexAEqualHexB } from '@app/shared/helpers/';
-import { HexData } from '@app/shared/interfaces';
-import { Direction, RequiredHexDataKey } from '@app/shared/types';
+import { compareHexData, isHexAEqualHexB, isHexWithValue } from '@app/shared/helpers';
+import { HexCoord, HexData } from '@app/shared/interfaces';
+import { Direction, HexCoordKey } from '@app/shared/types';
 
 @Component({
   selector: 'app-game-control',
@@ -114,22 +114,27 @@ export class GameControlComponent implements OnInit, OnDestroy {
       const comparisonArray = acc.concat(initialArray.slice(i));
 
       while (true) {
-        const potentialNewHexValue = this.getNeighborCoords(currenthHex, direction);
-        const neighbor = this.getNeighborHex(currenthHex, comparisonArray, direction);
+        const neighboringCoord = this.getNeighborCoord(currenthHex, direction);
+        const neighbor = this.getHex(neighboringCoord, comparisonArray);
 
-        const isInRange = this.isHexInRange(potentialNewHexValue);
+        let newHexValue: HexData;
+
+        const isInRange = this.isHexInRange(neighboringCoord);
 
         if (!isInRange) break;
 
-        if (neighbor !== undefined) {
+        if (neighbor === undefined) {
+          newHexValue = { ...neighboringCoord, value: currenthHex.value };
+        } else {
           const isSameValue = currenthHex.value === neighbor.value;
 
           if (!isSameValue || !shouldMerge) break;
 
-          potentialNewHexValue.value! *= 2;
+          newHexValue = this.newAddHex(currenthHex, neighbor) as HexData;
+
           acc = acc.filter((hexData) => !isHexAEqualHexB(hexData, neighbor));
         }
-        currenthHex = potentialNewHexValue;
+        currenthHex = newHexValue;
       }
 
       acc.push(currenthHex);
@@ -137,8 +142,19 @@ export class GameControlComponent implements OnInit, OnDestroy {
     }, []);
   }
 
-  getNeighborCoords(hexA: HexData, direction: Direction): HexData {
-    return this.addHex(hexA, DIRECTIONS[direction]);
+  getNeighborCoord(hexA: HexCoord, direction: Direction): HexCoord {
+    return this.newAddHex(hexA, DIRECTIONS[direction]);
+  }
+
+  newAddHex(hexA: HexCoord | HexData, hexB: HexCoord | HexData): HexCoord | HexData {
+    const newCoords: HexCoord = {
+      q: hexA.q + hexB.q,
+      r: hexA.r + hexB.r,
+      s: hexA.s + hexB.s,
+    };
+
+    const areWithValue = isHexWithValue(hexA) && isHexWithValue(hexB);
+    return areWithValue ? { ...newCoords, value: hexA.value + hexB.value } : newCoords;
   }
 
   addHex(hexA: HexData, hexB: HexData): HexData {
@@ -150,25 +166,24 @@ export class GameControlComponent implements OnInit, OnDestroy {
     };
   }
 
-  getNeighborHex(hex: HexData, comparisonArray: HexData[], direction: Direction): HexData | undefined {
-    const neighborCoords = this.getNeighborCoords(hex, direction);
+  getHex(coord: HexCoord, comparisonArray: HexData[]): HexData | undefined {
     return comparisonArray.find((hexData) => {
-      return isHexAEqualHexB(hexData, neighborCoords);
+      return isHexAEqualHexB(coord, hexData);
     });
   }
 
-  isHexInRange(hex: HexData): boolean {
-    const requiredHexDataKeys: RequiredHexDataKey[] = ['q', 's', 'r'];
-    const hasViolatedRange = requiredHexDataKeys.some((key) => Math.abs(hex[key]) > this.radius);
+  isHexInRange(hex: HexCoord): boolean {
+    const HexCoordKeys: HexCoordKey[] = ['q', 's', 'r'];
+    const hasViolatedRange = HexCoordKeys.some((key) => Math.abs(hex[key]) > this.radius);
 
     return !hasViolatedRange;
   }
 
   canMove(hexDataArray: HexData[], direction: Direction): boolean {
     return hexDataArray.some((hex) => {
-      return (
-        this.isHexInRange(this.getNeighborCoords(hex, direction)) && !this.getNeighborHex(hex, hexDataArray, direction)
-      );
+      const neighboringCoord = this.getNeighborCoord(hex, direction);
+      console.log(Math.random(), hex.value, this.isHexInRange(neighboringCoord));
+      return this.isHexInRange(neighboringCoord) && !this.getHex(neighboringCoord, hexDataArray);
     });
   }
 

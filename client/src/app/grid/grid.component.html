@@ -1,10 +1,9 @@
 <app-hexagon
-  *ngFor="let hex of backgroundHexData; trackBy: trackByCoord"
+  *ngFor="let hex of backgroundHexCoords; trackBy: trackByCoord"
   [hexWidth]="hexWidth"
   [gap]="gap"
-  [hexData]="hex"
+  [hexCoord]="hex"
   [offset]="offset"
-  [isBackgroundHex]="true"
   [isSetup]="(isSetup$ | async)!"
 ></app-hexagon>
 <ng-container *ngIf="!(isSetup$ | async)">
@@ -12,7 +11,8 @@
     *ngFor="let hex of hexData; trackBy: trackByCoord"
     [hexWidth]="hexWidth"
     [gap]="gap"
-    [hexData]="hex"
+    [hexCoord]="hex"
+    [value]="hex.value"
     [offset]="offset"
   ></app-hexagon>
 </ng-container>

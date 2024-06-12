@@ -12,7 +12,7 @@ export const compareHexData = (
   );
 
   const hasMismatch = curr[key].some((currentHex, index) => {
-    return !isHexAEqualHexB(currentHex, prev[key][index], true);
+    return !isHexAEqualHexB(currentHex, prev[key][index]);
   });
   // TODO: remove console.log
   if (!hasMismatch) console.log('>> no mismatch found, skipping hexData update', key);

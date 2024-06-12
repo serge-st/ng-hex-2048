@@ -1,6 +1,5 @@
-export interface HexData {
-  q: number;
-  s: number;
-  r: number;
-  value?: number;
+import { HexCoord } from './hex-coord';
+
+export interface HexData extends HexCoord {
+  value: number;
 }

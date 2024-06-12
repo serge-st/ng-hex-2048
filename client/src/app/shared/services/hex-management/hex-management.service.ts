@@ -1,12 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
-import { HexData } from '@app/shared/interfaces';
+import { HexCoord, HexData } from '@app/shared/interfaces';
 import { HexManagementState } from './interfaces/hex-management-state';
 
 const initialState: HexManagementState = {
   hexData: [],
-  backgroundHexData: [],
+  backgroundHexCoords: [],
 };
 
 @Injectable({
@@ -38,8 +38,8 @@ export class HexManagementService {
     console.log(`New state: ${whereFrom}`, this.getState());
   }
 
-  setBackGroundHexData(hexData: HexData[], whereFrom?: string): void {
-    this.setState({ backgroundHexData: hexData }, whereFrom);
+  setbackgroundHexCoords(hexCoord: HexCoord[], whereFrom?: string): void {
+    this.setState({ backgroundHexCoords: hexCoord }, whereFrom);
   }
 
   setHexData(hexData: HexData[], whereFrom?: string): void {
