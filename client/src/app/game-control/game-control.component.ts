@@ -160,13 +160,11 @@ export class GameControlComponent implements OnInit, OnDestroy {
   }
 
   processMoveNew(direction: Direction, hexDataArray: HexData[]): HexData[] {
-    const result: HexData[] = [];
-
-    hexDataArray.forEach((hex, i) => {
-      let newHex: HexData = hex;
+    return hexDataArray.map((hex, i) => {
+      let newHex: HexData = { ...hex };
 
       while (true) {
-        const neighborCoord = this.getNeighborCoord(hex, direction);
+        const neighborCoord = this.getNeighborCoord(newHex, direction);
         const isInRange = this.isHexInRange(neighborCoord);
 
         if (!isInRange) break;
@@ -175,13 +173,11 @@ export class GameControlComponent implements OnInit, OnDestroy {
 
         if (neighbor) break;
 
-        this.updateHexCoord(newHex, neighborCoord);
+        newHex = { ...newHex, ...neighborCoord };
       }
 
-      result.push(newHex);
+      return newHex;
     });
-
-    return result;
   }
 
   getNeighborCoord(hexA: HexCoord | HexData, direction: Direction): HexCoord {
@@ -207,12 +203,6 @@ export class GameControlComponent implements OnInit, OnDestroy {
     return hexDataArray.find((hexData) => {
       return isHexAEqualHexBNew(hexData, hexCoord);
     });
-  }
-
-  updateHexCoord(hex: HexData, coord: HexCoord): void {
-    hex.q = coord.q;
-    hex.r = coord.r;
-    hex.s = coord.s;
   }
 
   movePlusS() {
