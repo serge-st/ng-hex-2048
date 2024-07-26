@@ -7,7 +7,7 @@
       "script": "start",
       "isBackground": true,
       "options": {
-        "cwd": "${workspaceFolder}/client"
+        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": {
         "owner": "typescript",
@@ -28,7 +28,7 @@
       "script": "test",
       "isBackground": true,
       "options": {
-        "cwd": "${workspaceFolder}/client"
+        "cwd": "${workspaceFolder}"
       },
       "problemMatcher": {
         "owner": "typescript",
