@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { GameSetupComponent } from '@app/game-setup';
-import { GridComponent } from '@app/grid';
+import { GameSetupComponent } from '@app/widgets/game-setup';
+import { GridComponent } from '@app/widgets/grid';
 
 @Component({
   selector: 'app-game-setup-page',

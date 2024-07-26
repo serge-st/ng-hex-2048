@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { GridComponent } from '@app/grid';
-import { GameControlComponent } from '@app/game-control';
 import { Observable, map } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { GameSetupService } from '@app/shared/services/game-setup';
 import { GameState } from '@app/shared/types';
-import { GameOverControlComponent } from '@app/game-over-control/game-over-control.component';
+import { GridComponent } from '@app/widgets/grid';
+import { GameControlComponent } from '@app/widgets/game-control';
+import { GameOverControlComponent } from '@app/widgets/game-over-control';
 
 @Component({
   selector: 'app-game-page',
