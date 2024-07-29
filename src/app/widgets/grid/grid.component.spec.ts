@@ -1,22 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GridComponent } from './grid.component';
-import { GameSetupService } from '@app/shared/services/game-setup';
-import { HexManagementService } from '@app/shared/services/hex-management';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('GridComponent', () => {
   let component: GridComponent;
   let fixture: ComponentFixture<GridComponent>;
-  let gameSetupService: GameSetupService;
-  let hexManagementService: HexManagementService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [GridComponent, HttpClientTestingModule],
     }).compileComponents();
 
-    gameSetupService = TestBed.inject(GameSetupService);
-    hexManagementService = TestBed.inject(HexManagementService);
     fixture = TestBed.createComponent(GridComponent);
     component = fixture.componentInstance;
     component.radius = 1;

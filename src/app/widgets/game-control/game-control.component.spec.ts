@@ -7,8 +7,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('GameControlComponent', () => {
   let component: GameControlComponent;
   let fixture: ComponentFixture<GameControlComponent>;
-  let gameSetupService: GameSetupService;
-  let hexManagementService: HexManagementService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -16,8 +14,6 @@ describe('GameControlComponent', () => {
       providers: [GameSetupService, HexManagementService],
     }).compileComponents();
 
-    gameSetupService = TestBed.inject(GameSetupService);
-    hexManagementService = TestBed.inject(HexManagementService);
     fixture = TestBed.createComponent(GameControlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

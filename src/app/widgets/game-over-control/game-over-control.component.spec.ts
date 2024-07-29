@@ -8,16 +8,12 @@ import { RouterModule } from '@angular/router';
 describe('GameOverControlComponent', () => {
   let component: GameOverControlComponent;
   let fixture: ComponentFixture<GameOverControlComponent>;
-  let gameSetupService: GameSetupService;
-  let hexManagementService: HexManagementService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [GameOverControlComponent, HttpClientTestingModule, RouterModule.forRoot([])],
     }).compileComponents();
 
-    gameSetupService = TestBed.inject(GameSetupService);
-    hexManagementService = TestBed.inject(HexManagementService);
     fixture = TestBed.createComponent(GameOverControlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
