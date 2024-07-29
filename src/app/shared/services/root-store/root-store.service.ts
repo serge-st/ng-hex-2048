@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { RootState } from './interfaces/root-state';
-import { BehaviorSubject, Observable, merge } from 'rxjs';
-import { HexData } from '@app/shared/interfaces';
+import { combineLatest } from 'rxjs';
 import { GameSetupService } from '../game-setup';
 import { HexManagementService } from '../hex-management';
+import { RootState } from './types';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +12,9 @@ export class RootStoreService {
     private gameSetupService: GameSetupService,
     private hexManagementService: HexManagementService,
   ) {}
-  // TODO: implement this
-  // private state = new BehaviorSubject<RootState>(merge(this.gameSetupService.state$, this.hexManagementService.state$));
-  // state$: Observable<RootState> = this.state.asObservable();
+
+  readonly state$: RootState = combineLatest({
+    gameSetupState: this.gameSetupService.state$,
+    hexManagementState: this.hexManagementService.state$,
+  });
 }
