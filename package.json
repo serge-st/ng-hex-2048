@@ -10,7 +10,10 @@
     "format:ts": "prettier --write \"src/**/*.ts\"",
     "format:html": "prettier --write \"src/**/*.html\"",
     "format:scss": "prettier --write \"src/**/*.scss\" && stylelint \"src/**/*.scss\" --fix",
-    "build:cicd": "pnpm i --frozen-lockfile && pnpm build"
+    "format:cicd": "pnpm format:ts && pnpm format:html && pnpm format:scss",
+    "build:cicd": "pnpm i --frozen-lockfile && pnpm build",
+    "test:cicd": "ng test --source-map=false --browsers=ChromeHeadless --watch=false",
+    "typecheck": "tsc --noEmit"
   },
   "private": true,
   "dependencies": {
