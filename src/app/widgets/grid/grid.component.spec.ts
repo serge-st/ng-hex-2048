@@ -1,22 +1,30 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GridComponent } from './grid.component';
+import { GameSetupService } from '@app/shared/services/game-setup';
+import { HexManagementService } from '@app/shared/services/hex-management';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('GridComponent', () => {
   let component: GridComponent;
   let fixture: ComponentFixture<GridComponent>;
+  let gameSetupService: GameSetupService;
+  let hexManagementService: HexManagementService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GridComponent],
+      imports: [GridComponent, HttpClientTestingModule],
     }).compileComponents();
 
+    gameSetupService = TestBed.inject(GameSetupService);
+    hexManagementService = TestBed.inject(HexManagementService);
     fixture = TestBed.createComponent(GridComponent);
     component = fixture.componentInstance;
     component.radius = 1;
     component.hexWidth = 100;
     component.hexHeight = 100;
-    component.styleVariables = { width: '100px', height: '100px', xCoord: '100px', yCoord: '100px' };
+    component.styleVariables = { width: '100px', height: '100px', 'x-coord': '100px', 'y-coord': '100px' };
     component.offset = { x: 0, y: 0 };
+    component.gap = 0;
     fixture.detectChanges();
   });
 
@@ -110,26 +118,25 @@ describe('GridComponent', () => {
     });
   });
 
-  // TODO: review later
-  // describe('setHexCoords', () => {
-  //   it('should generate the correct hex coords 1 radius', () => {
-  //     component.radius = 1;
-  //     component.setHexCoords();
-  //     expect(component.hexCoords).toEqual([
-  //       { q: -1, r: 0, s: 1 },
-  //       { q: -1, r: 1, s: 0 },
-  //       { q: 0, r: -1, s: 1 },
-  //       { q: 0, r: 0, s: 0 },
-  //       { q: 0, r: 1, s: -1 },
-  //       { q: 1, r: -1, s: 0 },
-  //       { q: 1, r: 0, s: -1 },
-  //     ]);
-  //   });
+  describe('setBackgroundHexCoords', () => {
+    it('should generate the correct hex coords 1 radius', () => {
+      component.radius = 1;
+      component.setBackgroundHexCoords();
+      expect(component.backgroundHexCoords).toEqual([
+        { q: -1, r: 0, s: 1 },
+        { q: -1, r: 1, s: 0 },
+        { q: 0, r: -1, s: 1 },
+        { q: 0, r: 0, s: 0 },
+        { q: 0, r: 1, s: -1 },
+        { q: 1, r: -1, s: 0 },
+        { q: 1, r: 0, s: -1 },
+      ]);
+    });
 
-  //   it('should return 19 objects for 2 radius', () => {
-  //     component.radius = 2;
-  //     component.setHexCoords();
-  //     expect(component.hexCoords.length).toBe(19);
-  //   });
-  // });
+    it('should return 19 objects for 2 radius', () => {
+      component.radius = 2;
+      component.setBackgroundHexCoords();
+      expect(component.backgroundHexCoords.length).toBe(19);
+    });
+  });
 });

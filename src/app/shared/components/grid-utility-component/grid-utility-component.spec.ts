@@ -4,7 +4,7 @@ import { GridUtilityComponent } from './grid-utility-component';
 class TestGridUtilityComponent extends GridUtilityComponent {
   hexWidth: number = 0;
   hexHeight: number = 0;
-  styleVariables: GridUtilStyleVariables = { width: '', height: '', xCoord: '', yCoord: '' };
+  styleVariables: GridUtilStyleVariables = { width: '', height: '', 'x-coord': '', 'y-coord': '' };
 }
 
 describe('GridUtilityComponent', () => {
@@ -46,14 +46,14 @@ describe('GridUtilityComponent', () => {
 
     it('should leave xCoord and yCoord empty if not provided', () => {
       component.setStyleVariables(100, 100);
-      expect(component.styleVariables.xCoord).toBe('');
-      expect(component.styleVariables.yCoord).toBe('');
+      expect(component.styleVariables['x-coord']).toBe('');
+      expect(component.styleVariables['y-coord']).toBe('');
     });
 
     it('should set xCoord and yCoord if provided', () => {
       component.setStyleVariables(100, 100, 50, 50);
-      expect(component.styleVariables.xCoord).toBe('50.000px');
-      expect(component.styleVariables.yCoord).toBe('50.000px');
+      expect(component.styleVariables['x-coord']).toBe('50.000px');
+      expect(component.styleVariables['y-coord']).toBe('50.000px');
     });
   });
 });
