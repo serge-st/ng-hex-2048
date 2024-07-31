@@ -2,7 +2,7 @@ import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/co
 import { RouterLink } from '@angular/router';
 import { LinkStyleType } from './types';
 import { ColorType } from '@app/shared/types';
-import { PRIMARY_COLORS, UNDERLINE_LINK_COLORS } from '@app/shared/constants';
+import { DANGER_COLORS, PRIMARY_COLORS, UNDERLINE_LINK_COLORS } from '@app/shared/constants';
 import { getCSSVariableString } from '@app/shared/helpers';
 
 @Component({
@@ -23,6 +23,7 @@ export class LinkComponent {
 
   private linkColors: Record<LinkStyleType, ColorType> = {
     'primary-btn': PRIMARY_COLORS,
+    'danger-btn': DANGER_COLORS,
     underline: UNDERLINE_LINK_COLORS,
   };
   private get linkColor(): ColorType {
