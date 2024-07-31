@@ -55,7 +55,7 @@ export class HexagonComponent extends GridUtilityComponent implements OnChanges 
     return getCSSVariableString(this.styleVariables);
   }
   @HostBinding('style.--background-color') get backgroundColor() {
-    return isHexData(this.hexDetails) ? this.colors[Math.log2(this.hexDetails.value)] : undefined;
+    return isHexData(this.hexDetails) ? this.colors[Math.log2(this.hexDetails.value) - 1] : undefined;
   }
   @HostBinding('attr.data-q') get q() {
     return this.hexDetails.q;
