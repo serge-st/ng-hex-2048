@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { distinctUntilChanged } from 'rxjs';
 import { GameSetupService } from '@app/shared/services/game-setup';
@@ -9,22 +9,28 @@ import { HexCoord, HexData } from '@app/shared/interfaces';
 import { Direction, DirectionKey, HexCoordKey, ValueQuantityMap, ValueQuantityPair } from '@app/shared/types';
 import { MergeResult } from './types';
 import { ControlButtonComponent } from '../control-button/';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-game-control',
   standalone: true,
-  imports: [ControlButtonComponent],
+  imports: [ControlButtonComponent, NgIf],
   templateUrl: './game-control.component.html',
   styleUrl: './game-control.component.scss',
 })
-export class GameControlComponent {
+export class GameControlComponent implements OnInit {
   radius!: number;
   hexData!: HexData[];
   isAnimatingOrTransitioning!: boolean;
+  desktopBreakpoint: number = 0;
+  get isDesktop(): boolean {
+    return window.innerWidth >= this.desktopBreakpoint;
+  }
 
   constructor(
     private readonly gameSetupService: GameSetupService,
     private readonly hexManagementService: HexManagementService,
+    private el: ElementRef,
   ) {
     this.gameSetupService.state$
       .pipe(takeUntilDestroyed())
@@ -48,6 +54,22 @@ export class GameControlComponent {
       .subscribe((state) => {
         this.isAnimatingOrTransitioning = state.isAnimatingOrTransitioning;
       });
+  }
+
+  ngOnInit(): void {
+    this.desktopBreakpoint = this.setDesktopBreakpointVariable();
+    this.onResize();
+  }
+
+  private setDesktopBreakpointVariable() {
+    const hostStyles = getComputedStyle(this.el.nativeElement);
+    const breakpointString = hostStyles.getPropertyValue('--app-breakpoint-desktop');
+    return parseFloat(breakpointString) || 0;
+  }
+
+  @HostListener('window:resize', [''])
+  onResize() {
+    this.isDesktop;
   }
 
   get maxHexCount(): number {

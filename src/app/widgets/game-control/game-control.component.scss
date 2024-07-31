@@ -1,6 +1,8 @@
 @import 'variables';
 
 :host {
+  --app-breakpoint-desktop: #{$app-breakpoint-desktop};
+
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -14,20 +16,4 @@
   gap: 5px;
   align-items: center;
   justify-content: center;
-}
-
-@media (max-width: $app-breakpoint-desktop - 1px) {
-  .control-row.desktop {
-    display: none;
-  }
-}
-
-@media (min-width: $app-breakpoint-desktop) {
-  .control-row.mobile {
-    display: none;
-  }
-
-  .control-row.desktop {
-    display: flex;
-  }
 }
