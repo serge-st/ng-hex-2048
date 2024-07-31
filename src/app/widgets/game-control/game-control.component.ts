@@ -217,6 +217,10 @@ export class GameControlComponent implements OnInit {
     if (!canMerge) return this.gameSetupService.setGameState('game-over');
   }
 
+  isWin(hexData: HexData[]): boolean {
+    return hexData.some((hex) => hex.value === 2048);
+  }
+
   performMove(direction: Direction): void {
     let localHexData = [...this.hexData];
     let hexesToDelete: HexData[];
@@ -245,6 +249,8 @@ export class GameControlComponent implements OnInit {
         hexesToDelete,
         'GameControlComponent.setNextTurnHexData()',
       );
+
+      if (this.isWin(thisTurnHexData)) return this.gameSetupService.setGameState('win');
 
       this.isGameOver();
     });
