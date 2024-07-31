@@ -28,6 +28,9 @@
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles", "src/styles/variables"]
+            },
             "scripts": []
           },
           "configurations": {
@@ -67,8 +70,7 @@
               "buildTarget": "ng-hex-2048:build:production"
             },
             "development": {
-              "buildTarget": "ng-hex-2048:build:development",
-              "proxyConfig": "src/proxy.conf.json"
+              "buildTarget": "ng-hex-2048:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -87,6 +89,9 @@
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": ["src/styles/styles.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/styles", "src/styles/variables"]
+            },
             "scripts": []
           }
         }
