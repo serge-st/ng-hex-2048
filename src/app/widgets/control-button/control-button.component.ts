@@ -10,8 +10,10 @@ import { DirectionKey } from '@app/shared/types';
   templateUrl: './control-button.component.html',
 })
 export class ControlButtonComponent {
-  @Input() disabled: boolean = false;
   @Input({ required: true }) directionLabel!: DirectionKey;
+  @Input() disabled: boolean = false;
+  @Input() width: number = 40;
+  @Input() height?: number;
   @Output() moveEvent = new EventEmitter<DirectionKey>();
   appButtonActive: boolean = false;
 

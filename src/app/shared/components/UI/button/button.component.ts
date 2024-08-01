@@ -18,14 +18,19 @@ export class ButtonComponent {
   @Input() active: boolean = false;
   @Input() disabled: boolean = false;
   @Input() width?: number;
+  @Input() height?: number;
   @Output() appButtonEvent = new EventEmitter<void>();
 
   onClickEvent() {
     this.appButtonEvent.emit();
   }
 
-  @HostBinding('style.--width') get with() {
+  @HostBinding('style.--width') get widthInPx() {
     return this.width + 'px' || undefined;
+  }
+
+  @HostBinding('style.--height') get heightInPx() {
+    return this.height + 'px' || undefined;
   }
 
   private buttonColors: Record<ButtonStyleType, ColorType> = {
