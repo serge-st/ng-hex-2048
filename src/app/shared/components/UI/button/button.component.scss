@@ -12,9 +12,11 @@ button {
     box-shadow var(--app-button-animation-time) ease;
 }
 
-button:hover {
-  background-color: var(--hov-bg-color);
-  border-color: var(--hov-border-color);
+@media (hover: hover) and (pointer: fine) {
+  button:hover {
+    background-color: var(--hov-bg-color);
+    border-color: var(--hov-border-color);
+  }
 }
 
 button:active,
