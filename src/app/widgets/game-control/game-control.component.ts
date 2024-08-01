@@ -244,11 +244,7 @@ export class GameControlComponent implements OnInit {
     this.hexManagementService.getNewHexCoords(this.radius, thisTurnHexData).subscribe((newHexData) => {
       if (newHexData.length === 0) return this.gameSetupService.setGameState('game-over');
 
-      this.hexManagementService.setHexDataAndHexesToDelete(
-        thisTurnHexData.concat(newHexData),
-        hexesToDelete,
-        'GameControlComponent.setNextTurnHexData()',
-      );
+      this.hexManagementService.setHexDataAndHexesToDelete(thisTurnHexData.concat(newHexData), hexesToDelete);
 
       if (this.isWin(thisTurnHexData)) return this.gameSetupService.setGameState('win');
 

@@ -35,15 +35,15 @@ export class GameSetupComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.gameSetupService.getGameState() !== 'setup') {
-      this.gameSetupService.setGameState('setup', 'GameSetupComponent.ngOnInit()');
+      this.gameSetupService.setGameState('setup');
     }
 
     if (this.hexManagementService.getHexData().length > 0) {
-      this.hexManagementService.setHexData([], 'GameSetupComponent.ngOnInit()');
+      this.hexManagementService.setHexData([]);
     }
   }
 
   startGame(): void {
-    this.gameSetupService.setGameState('in-progress', `GameSetupComponent.startGame: setIsGameInProgress`);
+    this.gameSetupService.setGameState('in-progress');
   }
 }

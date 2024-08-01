@@ -135,11 +135,7 @@ export class GridComponent extends GridUtilityComponent {
 
     if (localHexCoords.length === this.backgroundHexCoords.length) return;
 
-    if (this.gameState === 'setup')
-      this.hexManagementService.setBackgroundHexCoords(
-        localHexCoords,
-        'GridComponent.setHexCoords setBackgroundHexCoords',
-      );
+    if (this.gameState === 'setup') this.hexManagementService.setBackgroundHexCoords(localHexCoords);
   }
 
   // TODO: refactor the method
