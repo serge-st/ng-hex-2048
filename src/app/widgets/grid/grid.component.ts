@@ -10,7 +10,6 @@ import { HexManagementService } from '@app/shared/services/hex-management';
 import { GameState } from '@app/shared/types';
 import { getCSSVariableString, isHexAEqualHexB, isSameHexArray } from '@app/shared/helpers';
 
-// TODO: remove console.log
 @Component({
   selector: 'app-grid',
   standalone: true,
@@ -65,7 +64,6 @@ export class GridComponent extends GridUtilityComponent {
       .pipe(takeUntilDestroyed())
       .pipe(distinctUntilChanged((prev, curr) => isSameHexArray(prev.backgroundHexCoords, curr.backgroundHexCoords)))
       .subscribe((state) => {
-        console.log(`>>> GridComponent backgroundHexCoords changed`);
         this.backgroundHexCoords = state.backgroundHexCoords;
       });
   }
