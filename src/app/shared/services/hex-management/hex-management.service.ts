@@ -36,27 +36,25 @@ export class HexManagementService {
     return this.state.value;
   }
 
-  // TODO: remove whereFrom after testing
-  private setState(newState: Partial<HexManagementState>, whereFrom?: string): void {
+  private setState(newState: Partial<HexManagementState>): void {
     this.state.next({ ...this.getState(), ...newState });
-    // TODO remove afer testing
-    console.log(`New state: ${whereFrom}`, this.getState());
   }
 
-  setBackgroundHexCoords(hexCoords: HexCoord[], whereFrom?: string): void {
-    this.setState({ backgroundHexCoords: hexCoords }, whereFrom);
+  setBackgroundHexCoords(hexCoords: HexCoord[]): void {
+    this.setState({ backgroundHexCoords: hexCoords });
   }
 
-  setHexData(hexData: HexData[], whereFrom?: string): void {
-    this.setState({ hexData: sortHexDataArray(hexData) }, whereFrom);
+  setHexData(hexData: HexData[]): void {
+    this.setState({ hexData: sortHexDataArray(hexData) });
   }
 
-  setIsAnimatingOrTransitioning(isAnimatingOrTransitioning: boolean, whereFrom?: string): void {
-    this.setState({ isAnimatingOrTransitioning }, whereFrom);
+  setIsAnimatingOrTransitioning(isAnimatingOrTransitioning: boolean): void {
+    if (this.getState().isAnimatingOrTransitioning === isAnimatingOrTransitioning) return;
+    this.setState({ isAnimatingOrTransitioning });
   }
 
-  setHexDataAndHexesToDelete(hexData: HexData[], hexesToDelete: HexData[], whereFrom?: string): void {
-    this.setState({ hexData: sortHexDataArray(hexData), hexesToDelete }, whereFrom);
+  setHexDataAndHexesToDelete(hexData: HexData[], hexesToDelete: HexData[]): void {
+    this.setState({ hexData: sortHexDataArray(hexData), hexesToDelete });
   }
 
   getHexData(): HexData[] {
