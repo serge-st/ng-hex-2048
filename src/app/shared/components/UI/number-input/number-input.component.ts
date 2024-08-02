@@ -10,7 +10,6 @@ import { parseNumberOrFloat } from '@app/shared/helpers';
 })
 export class NumberInputComponent {
   @Input({ required: true }) label: string | undefined;
-  // TODO: allow empty input value
   @Input({ required: true, transform: (value: any) => parseNumberOrFloat(value) }) value: number = 0;
   @Input() step: number = 1;
   @Input() minValue?: number;
