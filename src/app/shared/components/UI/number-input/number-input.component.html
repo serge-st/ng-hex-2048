@@ -2,10 +2,9 @@
 <input
   #input
   id="{{ label }}"
-  [min]="minValue"
   type="number"
   attr.aria-label="{{ label }}"
   [step]="step"
-  [value]="value"
+  [(value)]="value"
   (input)="onInputChange(input.value)"
 />
