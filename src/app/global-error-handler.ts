@@ -15,8 +15,10 @@ export class GlobalErrorHandler implements ErrorHandler {
     if (!(error instanceof HttpErrorResponse)) {
       error = error.rejection; // get the error object
     }
-    // TODO: Place error handling component here
-    this.zone.run(() => {});
+    this.zone.run(() => {
+      // TODO: Place error handling component here
+      alert('An error occurred. Please try again later.');
+    });
 
     console.error('Error from global error handler', error);
   }

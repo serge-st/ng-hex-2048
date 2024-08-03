@@ -9,6 +9,10 @@
 
   <app-grid></app-grid>
   <ng-container *ngIf="!(isWin$ | async)">
+    <h2>Game Controls</h2>
+    <p>Click the buttons to move the hexagons, or use your keyboard keys</p>
+    <!-- TODO: add only on mobile -->
+    <!-- <p>Press the buttons to move the hexagons</p> -->
     <app-game-control></app-game-control>
   </ng-container>
 </main>

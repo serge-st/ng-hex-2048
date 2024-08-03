@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, of, tap } from 'rxjs';
 import { HexCoord, HexCoordWithValue, HexData } from '@app/shared/interfaces';
 import { HexManagementState } from './interfaces/hex-management-state';
 import { hexagonIDGenerator, sortHexDataArray } from '@app/shared/helpers';
@@ -78,29 +78,6 @@ export class HexManagementService {
     return this.http.post<HexCoordWithValue[]>(url, JSON.stringify(userHexData), this.httpOptions).pipe(
       tap(() => this.initializeHexIDGenerator()),
       map((response) => this.transformIntoHexData(response)),
-      // TODO: set some UI error message if server doesn't provide a response
-      // catchError((err) => this.handleError(err, [])),
     );
-  }
-
-  // TODO: implement error handling
-  /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   *
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  // private handleError<T>(operation = 'operation', result?: T) {
-  // return (error: any): Observable<T> => {
-  //   console.error(error);
-  //   this.log(`${operation} failed: ${error.message}`);
-  //   return of(result as T);
-  // };
-  // }
-  private handleError<T>(error: any, result?: T): Observable<T> {
-    console.error('Error');
-    console.error(error);
-    return of(result as T);
   }
 }
