@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameSetupComponent } from './game-setup.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { RouterModule } from '@angular/router';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('GameSetupComponent', () => {
   let component: GameSetupComponent;
@@ -9,7 +10,8 @@ describe('GameSetupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GameSetupComponent, HttpClientTestingModule, RouterModule.forRoot([])],
+      imports: [GameSetupComponent, RouterModule.forRoot([])],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GameSetupComponent);

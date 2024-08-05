@@ -2,7 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { RootStoreService } from './root-store.service';
 import { GameSetupService } from '../game-setup';
 import { HexManagementService } from '../hex-management';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RootStoreService', () => {
   let service: RootStoreService;
@@ -11,7 +12,8 @@ describe('RootStoreService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     });
     service = TestBed.inject(RootStoreService);
     gameSetupService = TestBed.inject(GameSetupService);
