@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./readme-files/angular_wordmark_gradient.png" alt="Angular Logo" />
+  <img src="./.github/images/angular_wordmark_gradient.png" alt="Angular Logo" />
 </p>
 
 # Hexagonal 2048
@@ -29,7 +29,7 @@ Usually, `HTML` is used to display something like:
 
 Here `HTML` is used to display hexagons on a grid, where each hexagon is a separate `HTML` element:
 
-![Hexagon HTML](./readme-files/hex_html.png)
+![Hexagon HTML](./.github/images//hex_html.png)
 
 To move the game forward the application uses HTML requests, just like any other web app.
 
