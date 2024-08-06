@@ -9,7 +9,7 @@ import { HexCoord, HexData } from '@app/shared/interfaces';
 import { Direction, DirectionKey, HexCoordKey, ValueQuantityMap, ValueQuantityPair } from '@app/shared/types';
 import { MergeResult } from './types';
 import { ControlButtonComponent } from '../control-button/';
-import { DesktopBreakpointDirective } from '@app/shared/directives/desktop-breakpoint.directive';
+import { DesktopBreakpointDirective } from '@app/shared/directives';
 
 @Component({
   selector: 'app-game-control',

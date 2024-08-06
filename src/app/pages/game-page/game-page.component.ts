@@ -6,7 +6,7 @@ import { GameState } from '@app/shared/types';
 import { GridComponent } from '@app/widgets/grid';
 import { GameControlComponent } from '@app/widgets/game-control';
 import { GameOverControlComponent } from '@app/widgets/game-over-control';
-import { DesktopBreakpointDirective } from '@app/shared/directives/desktop-breakpoint.directive';
+import { DesktopBreakpointDirective } from '@app/shared/directives';
 
 @Component({
   selector: 'app-game-page',
