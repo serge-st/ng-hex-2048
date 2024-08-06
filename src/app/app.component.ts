@@ -10,5 +10,5 @@ import { GamePageComponent } from '@app/pages';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'ng-hex-2048';
+  title = 'Hexagonal 2048';
 }
