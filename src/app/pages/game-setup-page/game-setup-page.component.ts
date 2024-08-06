@@ -7,6 +7,6 @@ import { GridComponent } from '@app/widgets/grid';
   standalone: true,
   imports: [GameSetupComponent, GridComponent],
   templateUrl: './game-setup-page.component.html',
-  styleUrls: ['../pages-styles.scss', './game-setup-page.component.scss'],
+  styleUrls: ['../pages-styles.scss' /*'./game-setup-page.component.scss'*/],
 })
 export class GameSetupPageComponent {}
