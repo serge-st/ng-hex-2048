@@ -7,11 +7,11 @@ import { GlobalErrorHandler } from './global-error-handler';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
     },
+    provideRouter(routes),
     provideHttpClient(withInterceptors([universalInterceptor])),
   ],
 };
