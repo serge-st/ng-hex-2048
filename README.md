@@ -49,7 +49,7 @@ Received data is then set into the app state. After the next move is made, a new
 
 This process goes on until the user manages to merge hexagons enough times to get at least one of them to have the value of `2048`.
 
-If none of the hexagons have the value of `2048`` and no more moves are left - the game is lost.
+If none of the hexagons have the value of `2048` and no more moves are left - the game is lost.
 
 ### Installation:
 
