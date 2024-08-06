@@ -1,6 +1,6 @@
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BreakpointObserverService } from '../services/breakpoint-observer';
 
 @Directive({
   selector: '[appShowOnDesktop]',
@@ -8,17 +8,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class DesktopBreakpointDirective {
   constructor(
-    private readonly breakpointObserver: BreakpointObserver,
+    private readonly breakpointObserverService: BreakpointObserverService,
     private readonly templateRef: TemplateRef<any>,
     private readonly viewContainer: ViewContainerRef,
   ) {
-    this.breakpointObserver
-      .observe([Breakpoints.Large, Breakpoints.XLarge])
-      .pipe(takeUntilDestroyed())
-      .subscribe((result) => {
-        this.isDesktop = result.matches;
-        this.processBreakpointChange();
-      });
+    this.breakpointObserverService.state$.pipe(takeUntilDestroyed()).subscribe((result) => {
+      this.isDesktop = result.isDesktop;
+      this.processBreakpointChange();
+    });
   }
   isDesktop!: boolean;
   @Input({ required: true }) appShowOnDesktop!: boolean;
