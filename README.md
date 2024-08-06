@@ -1,27 +1,72 @@
-# NgHex2048
+<p align="center">
+  <img src="./readme-files/angular_wordmark_gradient.png" alt="Angular Logo" />
+</p>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.6.
+# Hexagonal 2048
 
-## Development server
+### Description:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Initially, the idea was taken from the Evolution TypeScript bootcamp task.
 
-## Code scaffolding
+Massive thanks to **Amit Patel** from **Red Blob Games** for creating this [amazing article](https://www.redblobgames.com/grids/hexagons/) that helped a ton!
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+This repo contains the client side of my implementation of the Hexagonal 2048 game.
 
-## Build
+If you are interested in the server-side implementation, please visit [ng-hex-2048-server](https://github.com/serge-st/ng-hex-2048-server)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Additional information:
 
-## Running unit tests
+As a `React` developer, I decided to take on this challenge and see if I could build this app at all, as well as test my learning skills and build it using `Angular`.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+I wanted it to be a pure web-based game, intending to use `HTML` elements to draw the shapes and basic `CSS` transitions to make the game more appealing to the eye.
 
-## Running end-to-end tests
+Usually, `HTML` is used to display something like:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```html
+<h1>This is a header</h1>
+<p>This is a paragraph</p>
+```
 
-## Further help
+Here `HTML` is used to display hexagons on a grid, where each hexagon is a separate `HTML` element:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+![Hexagon HTML](./readme-files/hex_html.png)
+
+To move the game forward the application uses HTML requests, just like any other web app.
+
+```js
+fetch('http://localhost:3000/hex-grid-management/1', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify([]),
+})
+  .then((response) => response.json())
+  .then((data) => console.log(data));
+```
+
+Received data is then set into the app state. After the next move is made, a new data array (containing the latest user move and modified hexagons) is created and sent to the server in the body. In turn, the server returns an array of new hexagons to be added to the grid.
+
+This process goes on until the user manages to merge hexagons enough times to get at least one of them to have the value of `2048`.
+
+If none of the hexagons have the value of `2048`` and no more moves are left - the game is lost.
+
+### Installation:
+
+```bash
+pnpm install --frozen-lockfile
+```
+
+### Running the app:
+
+```bash
+pnpm start
+```
+
+🤓 Please note that it expects [ng-hex-2048-server](https://github.com/serge-st/ng-hex-2048-server) running on `localhost:3000`
+
+---
+
+**Author:** [Serge Stecenko](https://www.linkedin.com/in/serge-stecenko/)
+
+**Link:** The game is available on my website: [hex2048.stetsen.co](https://hex2048.stetsen.co/)
