@@ -1,5 +1,3 @@
-@import 'variables';
-
 fieldset {
   display: flex;
   flex-direction: column;
@@ -15,12 +13,12 @@ legend {
 .input-wrapper {
   display: flex;
   gap: 16px;
+}
 
-  @media (max-width: $app-breakpoint-desktop - 1px) {
-    flex-direction: column;
-  }
+.input-wrapper.is-mobile {
+  flex-direction: column;
+}
 
-  @media (min-width: $app-breakpoint-desktop) {
-    flex-direction: row;
-  }
+.input-wrapper.is-desktop {
+  flex-direction: row;
 }

@@ -1,7 +1,7 @@
 <fieldset>
   <legend>Game Setup</legend>
 
-  <div class="input-wrapper">
+  <div class="input-wrapper" [ngClass]="{ 'is-desktop': isDesktop$ | async, 'is-mobile': isMobile$ | async }">
     <app-number-input
       [minValue]="1"
       [maxValue]="8"
