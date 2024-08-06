@@ -1,7 +1,7 @@
 fieldset {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--app-padding-large);
   align-items: center;
 }
 
@@ -12,7 +12,7 @@ legend {
 
 .input-wrapper {
   display: flex;
-  gap: 16px;
+  gap: var(--app-padding-medium);
 }
 
 .input-wrapper.is-mobile {

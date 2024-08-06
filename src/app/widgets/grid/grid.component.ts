@@ -18,14 +18,6 @@ import { getCSSVariableString, isHexAEqualHexB, isSameHexArray } from '@app/shar
   styleUrl: './grid.component.scss',
 })
 export class GridComponent extends GridUtilityComponent {
-  trackByCoord(_index: number, hexCoord: HexCoord): string {
-    return `${hexCoord.q},${hexCoord.r},${hexCoord.s}`;
-  }
-
-  trackByID(_index: number, hex: HexData): number {
-    return hex.id;
-  }
-
   radius!: number;
   gap!: number;
   hexWidth!: number;
@@ -34,12 +26,22 @@ export class GridComponent extends GridUtilityComponent {
   hexData: HexData[] = [];
   hexesToDelete: HexData[] = [];
   backgroundHexCoords: HexCoord[] = [];
+  hexHeight!: number;
+  gridWidth!: number;
+  gridHeight!: number;
+  offset!: Position;
+  styleVariables!: GridUtilStyleVariables;
+  readonly HEX_HORIZONTAL_SPAN_RATIO = 0.75;
+  get isSetup$(): Observable<boolean> {
+    return this.gameSetupService.state$.pipe(map((state) => state.gameState === 'setup'));
+  }
 
   constructor(
     private readonly gameSetupService: GameSetupService,
     private readonly hexManagementService: HexManagementService,
   ) {
     super();
+
     this.gameSetupService.state$.pipe(takeUntilDestroyed()).subscribe((state) => {
       this.radius = state.radius;
       this.gap = state.gap;
@@ -55,7 +57,7 @@ export class GridComponent extends GridUtilityComponent {
       .pipe(pairwise())
       .subscribe(([prevState, currState]) => {
         this.previousHexData = prevState.hexData;
-        const hexDataWithAnimations = this.setAnimations(currState.hexData);
+        const hexDataWithAnimations = this.applyAnimations(currState.hexData);
         this.hexesToDelete = currState.hexesToDelete;
         this.hexData = hexDataWithAnimations;
       });
@@ -72,22 +74,19 @@ export class GridComponent extends GridUtilityComponent {
     return getCSSVariableString(this.styleVariables);
   }
 
-  get isSetup$(): Observable<boolean> {
-    return this.gameSetupService.state$.pipe(map((state) => state.gameState === 'setup'));
+  trackByCoord(_index: number, hexCoord: HexCoord): string {
+    return `${hexCoord.q},${hexCoord.r},${hexCoord.s}`;
   }
 
-  hexHeight!: number;
-  gridWidth!: number;
-  gridHeight!: number;
-  offset!: Position;
-  styleVariables!: GridUtilStyleVariables;
-
-  readonly HEX_HORIZONTAL_SPAN_RATIO = 0.75;
+  trackByID(_index: number, hex: HexData): number {
+    return hex.id;
+  }
 
   setGridWidth(): void {
     const hexesWidth = this.hexWidth + this.hexWidth * this.radius * this.HEX_HORIZONTAL_SPAN_RATIO * 2;
     const gapCompensation = this.radius * this.HEX_HORIZONTAL_SPAN_RATIO * 2 * this.gap;
     const padding = this.gap * 2 + gapCompensation;
+
     this.gridWidth = hexesWidth + padding;
   }
 
@@ -95,6 +94,7 @@ export class GridComponent extends GridUtilityComponent {
     const hexesHeight = this.hexHeight * (2 * this.radius + 1);
     const gapCompensation = this.radius * this.coordToPixel.f3 * this.gap;
     const padding = this.gap * 2 + gapCompensation;
+
     this.gridHeight = hexesHeight + padding;
   }
 
@@ -136,26 +136,29 @@ export class GridComponent extends GridUtilityComponent {
     if (this.gameState === 'setup') this.hexManagementService.setBackgroundHexCoords(localHexCoords);
   }
 
-  // TODO: refactor the method
-  setAnimations(currState: HexData[]): HexData[] {
+  private isNewHex(hex: HexData): boolean {
+    return !this.previousHexData.some((oldHex) => oldHex.id === hex.id);
+  }
+
+  private updateExistingHex(hex: HexData): HexData {
+    const oldHex = this.previousHexData.find((oldHex) => oldHex.id === hex.id) || hex;
+
+    if (isHexAEqualHexB(oldHex, hex)) return hex;
+
+    const didMerge = oldHex.value !== hex.value;
+    const nexHex: HexData = { ...hex, animation: didMerge ? 'merge' : 'move' };
+
+    return nexHex;
+  }
+
+  applyAnimations(currState: HexData[]): HexData[] {
     return currState.map((hex) => {
-      const isNewHex = !this.previousHexData.some((oldHex) => oldHex.id === hex.id);
-      if (isNewHex) {
+      if (this.isNewHex(hex)) {
         const newHex: HexData = { ...hex, animation: 'zoom-in' };
-
         return newHex;
-      } else {
-        const oldHex = this.previousHexData.find((oldHex) => oldHex.id === hex.id);
-
-        if (!oldHex) return hex;
-        if (isHexAEqualHexB(oldHex, hex)) return hex;
-
-        const didMerge = oldHex.value !== hex.value;
-
-        const nexHex: HexData = { ...hex, animation: didMerge ? 'merge' : 'move' };
-
-        return nexHex;
       }
+
+      return this.updateExistingHex(hex);
     });
   }
 }

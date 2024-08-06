@@ -18,7 +18,6 @@ export class GameOverControlComponent {
     private readonly hexManagementService: HexManagementService,
   ) {}
 
-  // TODO: Fix, if restart is pressed and server returns [] -> game over status is not set (happens after server error only)
   restartGame(): void {
     this.hexManagementService.setHexData([]);
     this.gameSetupService.setGameState('in-progress');
