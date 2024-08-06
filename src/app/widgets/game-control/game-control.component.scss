@@ -1,8 +1,4 @@
-@import 'variables';
-
 :host {
-  --app-breakpoint-desktop: #{$app-breakpoint-desktop};
-
   display: flex;
   flex-direction: column;
   gap: 10px;

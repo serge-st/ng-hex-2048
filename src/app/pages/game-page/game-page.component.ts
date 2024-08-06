@@ -6,11 +6,12 @@ import { GameState } from '@app/shared/types';
 import { GridComponent } from '@app/widgets/grid';
 import { GameControlComponent } from '@app/widgets/game-control';
 import { GameOverControlComponent } from '@app/widgets/game-over-control';
+import { DesktopBreakpointDirective } from '@app/shared/directives/desktop-breakpoint.directive';
 
 @Component({
   selector: 'app-game-page',
   standalone: true,
-  imports: [GridComponent, GameControlComponent, GameOverControlComponent, AsyncPipe, NgIf],
+  imports: [GridComponent, GameControlComponent, GameOverControlComponent, AsyncPipe, NgIf, DesktopBreakpointDirective],
   templateUrl: './game-page.component.html',
   styleUrls: ['../pages-styles.scss', './game-page.component.scss'],
 })

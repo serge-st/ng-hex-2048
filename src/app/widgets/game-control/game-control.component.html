@@ -1,4 +1,4 @@
-<ng-container *ngIf="isDesktop; else mobileControls">
+<ng-container *appShowOnDesktop="true">
   <div class="control-row">
     <app-control-button [disabled]="isAnimatingOrTransitioning" directionLabel="Q" (moveEvent)="move($event)"
       >Q</app-control-button
@@ -23,7 +23,7 @@
   </div>
 </ng-container>
 
-<ng-template #mobileControls>
+<ng-container *appShowOnDesktop="false">
   <div class="control-row">
     <app-control-button
       [disabled]="isAnimatingOrTransitioning"
@@ -76,4 +76,4 @@
       >↘</app-control-button
     >
   </div>
-</ng-template>
+</ng-container>
