@@ -1,5 +1,6 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent, NumberInputComponent } from '@app/shared/components/UI';
@@ -8,7 +9,7 @@ import { BreakpointObserverService } from '@app/shared/services/breakpoint-obser
 import { GameSetupService } from '@app/shared/services/game-setup';
 import { HexManagementService } from '@app/shared/services/hex-management';
 import { GameState } from '@app/shared/types';
-import { Observable, map } from 'rxjs';
+import { Observable, distinctUntilChanged, map } from 'rxjs';
 
 @Component({
   selector: 'app-game-setup',
@@ -23,8 +24,8 @@ export class GameSetupComponent implements OnInit {
   gap$!: Observable<number>;
   hexWidth$!: Observable<number>;
   gameState$!: Observable<GameState>;
-  isDesktop$!: Observable<boolean>;
-  isMobile$!: Observable<boolean>;
+  isDesktop!: boolean;
+  isMobile!: boolean;
 
   constructor(
     readonly gameSetupService: GameSetupService,
@@ -35,8 +36,19 @@ export class GameSetupComponent implements OnInit {
     this.gap$ = this.gameSetupService.state$.pipe(map((state) => state.gap));
     this.hexWidth$ = this.gameSetupService.state$.pipe(map((state) => state.hexWidth));
     this.gameState$ = this.gameSetupService.state$.pipe(map((state) => state.gameState));
-    this.isDesktop$ = this.breakpointObserverService.state$.pipe(map((state) => state.isDesktop));
-    this.isMobile$ = this.breakpointObserverService.state$.pipe(map((state) => state.isMobile));
+
+    this.breakpointObserverService.state$
+      .pipe(takeUntilDestroyed())
+      .pipe(distinctUntilChanged((prev, curr) => prev.isDesktop === curr.isDesktop || prev.isMobile === curr.isMobile))
+      .subscribe((state) => {
+        this.isDesktop = state.isDesktop;
+        this.isMobile = state.isMobile;
+        if (state.isDesktop) {
+          this.gameSetupService.setHexWidth(100);
+        } else {
+          this.gameSetupService.setHexWidth(50);
+        }
+      });
   }
 
   ngOnInit(): void {
