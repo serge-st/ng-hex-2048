@@ -15,23 +15,11 @@ import { HEX_COLORS } from './constants';
   styleUrl: './hexagon.component.scss',
 })
 export class HexagonComponent extends GridUtilityComponent implements OnChanges {
-  private colors = HEX_COLORS;
-
-  constructor(private hexManagementService: HexManagementService) {
-    super();
-  }
-
   @Input({ required: true }) hexDetails!: HexCoord | HexData;
   @Input({ required: true }) offset!: Position;
   @Input({ required: true }) gap!: number;
   @Input({ required: true }) hexWidth!: number;
   @Input() isSetup = false;
-  get value(): number | undefined {
-    return isHexData(this.hexDetails) ? this.hexDetails.value : undefined;
-  }
-  get animation(): HexAnimation | undefined {
-    return isHexData(this.hexDetails) ? this.hexDetails?.animation : undefined;
-  }
 
   @HostBinding('class.background-hex') get backgroundHexClass() {
     return Boolean(!this.value);
@@ -98,6 +86,19 @@ export class HexagonComponent extends GridUtilityComponent implements OnChanges 
   hexHeight!: number;
   pixelCoord!: Position;
   styleVariables!: GridUtilStyleVariables;
+
+  private colors = HEX_COLORS;
+
+  get value(): number | undefined {
+    return isHexData(this.hexDetails) ? this.hexDetails.value : undefined;
+  }
+  get animation(): HexAnimation | undefined {
+    return isHexData(this.hexDetails) ? this.hexDetails?.animation : undefined;
+  }
+
+  constructor(private hexManagementService: HexManagementService) {
+    super();
+  }
 
   ngOnChanges(): void {
     this.validateHexCoordinates();

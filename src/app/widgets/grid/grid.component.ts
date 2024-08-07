@@ -18,6 +18,10 @@ import { getCSSVariableString, isHexAEqualHexB, isSameHexArray } from '@app/shar
   styleUrl: './grid.component.scss',
 })
 export class GridComponent extends GridUtilityComponent {
+  @HostBinding('style') get cssVariables() {
+    return getCSSVariableString(this.styleVariables);
+  }
+
   radius!: number;
   gap!: number;
   hexWidth!: number;
@@ -31,7 +35,9 @@ export class GridComponent extends GridUtilityComponent {
   gridHeight!: number;
   offset!: Position;
   styleVariables!: GridUtilStyleVariables;
-  readonly HEX_HORIZONTAL_SPAN_RATIO = 0.75;
+
+  private readonly HEX_HORIZONTAL_SPAN_RATIO = 0.75;
+
   get isSetup$(): Observable<boolean> {
     return this.gameSetupService.state$.pipe(map((state) => state.gameState === 'setup'));
   }
@@ -68,10 +74,6 @@ export class GridComponent extends GridUtilityComponent {
       .subscribe((state) => {
         this.backgroundHexCoords = state.backgroundHexCoords;
       });
-  }
-
-  @HostBinding('style') get cssVariables() {
-    return getCSSVariableString(this.styleVariables);
   }
 
   trackByCoord(_index: number, hexCoord: HexCoord): string {

@@ -15,6 +15,7 @@ export class ControlButtonComponent {
   @Input() width: number = 40;
   @Input() height?: number;
   @Output() moveEvent = new EventEmitter<DirectionKey>();
+
   appButtonActive: boolean = false;
 
   @HostListener('window:keydown', ['$event'])

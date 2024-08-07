@@ -24,6 +24,10 @@ export class GameControlComponent {
   isAnimatingOrTransitioning!: boolean;
   isDesktop!: boolean;
 
+  get maxHexCount(): number {
+    return 1 + 3 * this.radius * (this.radius + 1);
+  }
+
   constructor(
     private readonly gameSetupService: GameSetupService,
     private readonly hexManagementService: HexManagementService,
@@ -50,10 +54,6 @@ export class GameControlComponent {
       .subscribe((state) => {
         this.isAnimatingOrTransitioning = state.isAnimatingOrTransitioning;
       });
-  }
-
-  get maxHexCount(): number {
-    return 1 + 3 * this.radius * (this.radius + 1);
   }
 
   move(directionKey: DirectionKey | undefined): void {

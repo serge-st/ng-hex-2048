@@ -17,22 +17,6 @@ export class LinkComponent {
   @Input() styleType: LinkStyleType = 'underline';
   @Output() appLinkEvent = new EventEmitter<void>();
 
-  onClickEvent() {
-    this.appLinkEvent.emit();
-  }
-
-  private linkColors: Record<LinkStyleType, ColorType> = {
-    'primary-btn': PRIMARY_COLORS,
-    'danger-btn': DANGER_COLORS,
-    underline: UNDERLINE_LINK_COLORS,
-  };
-  private get linkColor(): ColorType {
-    return this.linkColors[this.styleType];
-  }
-  get isButton(): boolean {
-    return this.styleType.includes('btn');
-  }
-
   @HostBinding('style') get cssVariables(): string {
     const { basic, hover, active, focus, disabled } = this.linkColor;
 
@@ -52,5 +36,21 @@ export class LinkComponent {
     };
 
     return getCSSVariableString(cssVars);
+  }
+
+  private linkColors: Record<LinkStyleType, ColorType> = {
+    'primary-btn': PRIMARY_COLORS,
+    'danger-btn': DANGER_COLORS,
+    underline: UNDERLINE_LINK_COLORS,
+  };
+  private get linkColor(): ColorType {
+    return this.linkColors[this.styleType];
+  }
+  get isButton(): boolean {
+    return this.styleType.includes('btn');
+  }
+
+  onClickEvent() {
+    this.appLinkEvent.emit();
   }
 }

@@ -21,24 +21,12 @@ export class ButtonComponent {
   @Input() height?: number;
   @Output() appButtonEvent = new EventEmitter<void>();
 
-  onClickEvent() {
-    this.appButtonEvent.emit();
-  }
-
   @HostBinding('style.--width') get widthInPx() {
     return this.width + 'px' || undefined;
   }
 
   @HostBinding('style.--height') get heightInPx() {
     return this.height + 'px' || undefined;
-  }
-
-  private buttonColors: Record<ButtonStyleType, ColorType> = {
-    primary: PRIMARY_COLORS,
-    secondary: SECONDARY_COLORS,
-  };
-  private get buttonColor(): ColorType {
-    return this.buttonColors[this.styleType];
   }
 
   @HostBinding('style') get cssVariables(): string {
@@ -59,5 +47,17 @@ export class ButtonComponent {
     };
 
     return getCSSVariableString(cssVars);
+  }
+
+  private buttonColors: Record<ButtonStyleType, ColorType> = {
+    primary: PRIMARY_COLORS,
+    secondary: SECONDARY_COLORS,
+  };
+  private get buttonColor(): ColorType {
+    return this.buttonColors[this.styleType];
+  }
+
+  onClickEvent() {
+    this.appButtonEvent.emit();
   }
 }

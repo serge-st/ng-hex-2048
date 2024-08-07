@@ -7,6 +7,9 @@ import { BreakpointObserverService } from '../services/breakpoint-observer';
   standalone: true,
 })
 export class DesktopBreakpointDirective {
+  @Input({ required: true }) appShowOnDesktop!: boolean;
+  isDesktop!: boolean;
+
   constructor(
     private readonly breakpointObserverService: BreakpointObserverService,
     private readonly templateRef: TemplateRef<any>,
@@ -17,8 +20,6 @@ export class DesktopBreakpointDirective {
       this.processBreakpointChange();
     });
   }
-  isDesktop!: boolean;
-  @Input({ required: true }) appShowOnDesktop!: boolean;
 
   ngOnInit(): void {
     this.viewContainer.clear();
