@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { LinkComponent } from '@app/shared/components/UI/link/link.component';
+import { Component, OnInit } from '@angular/core';
+import { LinkComponent } from '@app/shared/components/UI';
+import { VIEWED_ABOUT_PAGE_STORAGE_KEY } from '@app/shared/constants';
 
 @Component({
   selector: 'app-about-page',
@@ -8,4 +9,8 @@ import { LinkComponent } from '@app/shared/components/UI/link/link.component';
   templateUrl: './about-page.component.html',
   styleUrls: ['../pages-styles.scss', './about-page.component.scss'],
 })
-export class AboutPageComponent {}
+export class AboutPageComponent implements OnInit {
+  ngOnInit(): void {
+    sessionStorage.setItem(VIEWED_ABOUT_PAGE_STORAGE_KEY, 'true');
+  }
+}

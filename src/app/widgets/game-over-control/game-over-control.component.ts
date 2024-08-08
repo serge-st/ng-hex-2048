@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { GameSetupService } from '@app/shared/services/game-setup';
 import { HexManagementService } from '@app/shared/services/hex-management';
 import { ButtonComponent } from '../../shared/components/UI/button/button.component';
-import { LinkComponent } from '@app/shared/components/UI/link/link.component';
+import { LinkComponent } from '@app/shared/components/UI';
 
 @Component({
   selector: 'app-game-over-control',

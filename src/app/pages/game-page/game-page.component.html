@@ -11,8 +11,12 @@
   <ng-container *ngIf="!(isWin$ | async)">
     <h2>Game Controls</h2>
     <app-game-control></app-game-control>
-    <p *appShowOnDesktop="true">Click the buttons to move the hexagons, or use your keyboard keys</p>
+    <article>
+      <p *appShowOnDesktop="true">Click the buttons to move the hexagons, or use your keyboard keys</p>
 
-    <p *appShowOnDesktop="false">Press the buttons to move the hexagons</p>
+      <p *appShowOnDesktop="false">Press the buttons to move the hexagons</p>
+
+      <p class="game-tip">When two hexagons with the same number touch, they merge into one!</p>
+    </article>
   </ng-container>
 </main>

@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent, NumberInputComponent } from '@app/shared/components/UI';
-import { LinkComponent } from '@app/shared/components/UI/link/link.component';
+import { LinkComponent } from '@app/shared/components/UI';
 import { BreakpointObserverService } from '@app/shared/services/breakpoint-observer';
 import { GameSetupService } from '@app/shared/services/game-setup';
 import { HexManagementService } from '@app/shared/services/hex-management';
