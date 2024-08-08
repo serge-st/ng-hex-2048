@@ -1,12 +1,12 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { AppRoute } from '../types';
-import { GameSetupService } from '../services/game-setup';
+import { AppRoute } from '../../types';
+import { GameSetupService } from '../../services/game-setup';
 import { map, of, switchMap } from 'rxjs';
 
 type AppCommand = AppRoute;
 
-export const canStartGameGuard: CanActivateFn = (_route: ActivatedRouteSnapshot, _state) => {
+export const canStartGameGuard: CanActivateFn = (_route: ActivatedRouteSnapshot, _state: RouterStateSnapshot) => {
   const router = inject(Router);
   const gameSetupService = inject(GameSetupService);
   const commands: AppCommand[] = ['game-setup'];
