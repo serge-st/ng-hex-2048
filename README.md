@@ -51,6 +51,39 @@ This process goes on until the user manages to merge hexagons enough times to ge
 
 If none of the hexagons have the value of `2048` and no more moves are left - the game is lost.
 
+### Drawing Hexagons:
+
+Again, a big shout-out to **Amit Patel** from **Red Blob Games**, without his website it would probably have taken me ages to understand how to build hexagonal grids.
+
+Remember, our [ng-hex-2048-server](https://github.com/serge-st/ng-hex-2048-server) spits out data of this kind:
+
+```json
+[
+  { "q": 0, "r": 0, "s": 0, "value": 2 },
+  { "q": 1, "r": 0, "s": -1, "value": 2 }
+]
+```
+
+Inside the `GridComponent` we have a few parameters that help to determine the grid dimensions, based on our desired hexagon width and the gap between hexagons (hexagon height is calculated automatically: `√3 × (hexWidth ÷ 2)`).
+
+After the grid dimensions are known, we can determine the grid center and calculate pixel offset for hexagons.
+
+Then, we pass hexagon coordinates and the offset into our `HexagonComponent`s.
+
+In turn, the `HexagonComponent` component converts its coordinates (`q`, `r`, `s`) into pixel values using the formula for flat-topped hexagons kindly provided on the [RedBlobGames website](https://www.redblobgames.com/grids/hexagons/implementation.html):
+
+```cpp
+const Orientation layout_flat = Orientation(
+  3.0 / 2.0, 0.0, sqrt(3.0) / 2.0, sqrt(3.0),
+  2.0 / 3.0, 0.0, -1.0 / 3.0, sqrt(3.0) / 3.0,
+  0.0
+);
+```
+
+Then we need to add the `offset` and don't forget to _mind the gap_ 🚇🤓
+
+After adding an `absolute` position to our hexagon `HTML` elements, and setting `x` and `y` pixel coordinates to the `top` and `left` `CSS` properties, we now have a hexagonal grid in the browser 🥳
+
 ### Installation:
 
 ```bash
