@@ -4,17 +4,19 @@ import { LinkStyleType } from './types';
 import { ColorType } from '@app/shared/types';
 import { DANGER_COLORS, PRIMARY_COLORS, UNDERLINE_LINK_COLORS } from '@app/shared/constants';
 import { getCSSVariableString } from '@app/shared/helpers';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-link',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, NgIf, NgTemplateOutlet],
   templateUrl: './link.component.html',
   styleUrl: './link.component.scss',
 })
 export class LinkComponent {
-  @Input({ required: true }) to: RouterLink['routerLink'];
+  @Input({ required: true }) to: RouterLink['routerLink'] | string;
   @Input() styleType: LinkStyleType = 'underline';
+  @Input() isExternal: boolean = false;
   @Output() appLinkEvent = new EventEmitter<void>();
 
   @HostBinding('style') get cssVariables(): string {

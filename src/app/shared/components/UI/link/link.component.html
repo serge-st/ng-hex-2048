@@ -1,3 +1,18 @@
-<a [routerLink]="to" (click)="onClickEvent()" [class.button]="isButton">
-  <ng-content></ng-content>
+<ng-template #content><ng-content></ng-content></ng-template>
+
+<a
+  *ngIf="isExternal; else internalLink"
+  [href]="to"
+  (click)="onClickEvent()"
+  [class.button]="isButton"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <ng-container *ngTemplateOutlet="content"></ng-container>
 </a>
+
+<ng-template #internalLink>
+  <a [routerLink]="to" (click)="onClickEvent()" [class.button]="isButton">
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </a>
+</ng-template>
