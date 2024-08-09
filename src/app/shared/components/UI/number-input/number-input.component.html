@@ -7,4 +7,6 @@
   [step]="step"
   [(value)]="value"
   (input)="onInputChange(input.value)"
+  [class.error]="isError"
 />
+<p class="message" [class.error]="isError">{{ errorText }}</p>

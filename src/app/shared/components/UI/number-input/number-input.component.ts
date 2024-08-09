@@ -1,5 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ElementRef, ViewChild } from '@angular/core';
-import { parseNumberOrFloat } from '@app/shared/helpers';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-number-input',
@@ -10,26 +9,51 @@ import { parseNumberOrFloat } from '@app/shared/helpers';
 })
 export class NumberInputComponent {
   @Input({ required: true }) label: string | undefined;
-  @Input({ required: true, transform: (value: any) => parseNumberOrFloat(value) }) value: number = 0;
+  @Input() value: number | undefined = 0;
   @Input() step: number = 1;
   @Input() minValue?: number;
   @Input() maxValue?: number;
   @Output() valueChange = new EventEmitter<number>();
-  @ViewChild('input')
-  inputRef!: ElementRef;
+  isError: boolean = false;
+  errorText: string = '';
 
-  setNewValue(value: number) {
+  setNewValue(value: number): void {
+    this.validate(value);
+    if (this.isError) return;
+
     const minValue = Math.max(this.minValue ?? value, value);
     const maxValue = Math.min(this.maxValue ?? value, value);
 
     const newValue = minValue ^ value ^ maxValue;
 
     this.value = newValue;
-    this.inputRef.nativeElement.value = newValue;
   }
 
   onInputChange(value: string): void {
-    this.setNewValue(parseNumberOrFloat(value));
+    const parsedValue = parseFloat(value);
+    if (isNaN(parsedValue)) return;
+
+    this.setNewValue(parsedValue);
     this.valueChange.emit(this.value);
+  }
+
+  validate(value: number): void {
+    if (this.minValue && value < this.minValue) {
+      this.setError(`Value should be greater than ${this.minValue}`);
+    } else if (this.maxValue && value > this.maxValue) {
+      this.setError(`Value should be less than ${this.maxValue}`);
+    } else {
+      this.clearError();
+    }
+  }
+
+  private setError(message: string): void {
+    this.isError = true;
+    this.errorText = message;
+  }
+
+  private clearError(): void {
+    this.isError = false;
+    this.errorText = '';
   }
 }
