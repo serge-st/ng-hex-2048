@@ -5,4 +5,3 @@ export { CLOSEST_TO_BORDER } from './closest-to-border';
 export { sortHexDataArray } from './sort-hex-data-array';
 export { hexagonIDGenerator } from './hexagon-id-generator';
 export { getCSSVariableString } from './get-css-variable-string';
-export { parseNumberOrFloat } from './parse-number-or-float';

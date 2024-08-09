@@ -1,4 +1,7 @@
 .text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-padding-medium);
   max-width: 680px;
   padding: 0 var(--app-padding-small);
 }

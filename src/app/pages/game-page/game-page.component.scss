@@ -1,6 +1,7 @@
 article {
   display: flex;
   flex-direction: column;
+  gap: var(--app-padding-medium);
   align-items: center;
   padding: var(--app-padding-small);
 }

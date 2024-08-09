@@ -7,20 +7,20 @@
       [minValue]="1"
       [maxValue]="8"
       label="Radius"
-      [value]="radius$ | async"
+      [value]="(radius$ | async) || undefined"
       (valueChange)="gameSetupService.setRadius($event)"
     ></app-number-input>
     <app-number-input
       [minValue]="4"
       label="Gap"
-      [value]="gap$ | async"
+      [value]="(gap$ | async) || undefined"
       (valueChange)="gameSetupService.setGap($event)"
       [step]="4"
     ></app-number-input>
     <app-number-input
-      [minValue]="10"
+      [minValue]="30"
       label="Hex Width"
-      [value]="hexWidth$ | async"
+      [value]="(hexWidth$ | async) || undefined"
       (valueChange)="gameSetupService.setHexWidth($event)"
       [step]="10"
     ></app-number-input>
