@@ -43,11 +43,8 @@ export class GameSetupComponent implements OnInit {
       .subscribe((state) => {
         this.isDesktop = state.isDesktop;
         this.isMobile = state.isMobile;
-        if (state.isDesktop) {
-          this.gameSetupService.setHexWidth(100);
-        } else {
-          this.gameSetupService.setHexWidth(50);
-        }
+
+        this.updateHexWidth();
       });
   }
 
@@ -63,5 +60,9 @@ export class GameSetupComponent implements OnInit {
 
   startGame(): void {
     this.gameSetupService.setGameState('in-progress');
+  }
+
+  private updateHexWidth(): void {
+    this.isDesktop ? this.gameSetupService.setHexWidth(100) : this.gameSetupService.setHexWidth(50);
   }
 }

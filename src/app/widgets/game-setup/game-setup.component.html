@@ -1,7 +1,6 @@
 <fieldset>
   <legend>Game Setup</legend>
 
-  <!-- <div class="input-wrapper" [ngClass]="{ 'is-desktop': isDesktop$ | async, 'is-mobile': isMobile$ | async }"> -->
   <div class="input-wrapper" [ngClass]="{ 'is-desktop': isDesktop, 'is-mobile': isMobile }">
     <app-number-input
       [minValue]="1"
@@ -18,7 +17,7 @@
       [step]="4"
     ></app-number-input>
     <app-number-input
-      [minValue]="30"
+      [minValue]="40"
       label="Hex Width"
       [value]="(hexWidth$ | async) || undefined"
       (valueChange)="gameSetupService.setHexWidth($event)"
