@@ -222,7 +222,10 @@ export class GameControlComponent {
 
   setNextTurnHexData(thisTurnHexData: HexData[] = [], hexesToDelete: HexData[] = []): void {
     this.hexManagementService.getNewHexCoords(this.radius, thisTurnHexData).subscribe((newHexData) => {
-      this.hexManagementService.setHexDataAndHexesToDelete(thisTurnHexData.concat(newHexData), hexesToDelete);
+      this.hexManagementService.setHexDataAndHexesToDelete(
+        thisTurnHexData.concat(newHexData.map((hex) => ({ ...hex, value: 1024 }))),
+        hexesToDelete,
+      );
 
       if (this.isWin(thisTurnHexData)) return this.gameSetupService.setGameState('win');
 
