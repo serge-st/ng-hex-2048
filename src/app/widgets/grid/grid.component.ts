@@ -48,6 +48,12 @@ export class GridComponent extends GridUtilityComponent {
   ) {
     super();
 
+    this.manageGameSetupServiceUpdates();
+    this.manageHexManagementServiceBackgrondUpdates();
+    this.manageHexManagementServiceMainUpdates();
+  }
+
+  private manageGameSetupServiceUpdates(): void {
     this.gameSetupService.state$.pipe(takeUntilDestroyed()).subscribe((state) => {
       this.radius = state.radius;
       this.gap = state.gap;
@@ -56,7 +62,18 @@ export class GridComponent extends GridUtilityComponent {
 
       this.updateProperies();
     });
+  }
 
+  private manageHexManagementServiceBackgrondUpdates(): void {
+    this.hexManagementService.state$
+      .pipe(takeUntilDestroyed())
+      .pipe(distinctUntilChanged((prev, curr) => isSameHexArray(prev.backgroundHexCoords, curr.backgroundHexCoords)))
+      .subscribe((state) => {
+        this.backgroundHexCoords = state.backgroundHexCoords;
+      });
+  }
+
+  private manageHexManagementServiceMainUpdates(): void {
     this.hexManagementService.state$
       .pipe(takeUntilDestroyed())
       .pipe(distinctUntilChanged((prev, curr) => isSameHexArray(prev.hexData, curr.hexData)))
@@ -66,13 +83,6 @@ export class GridComponent extends GridUtilityComponent {
         const hexDataWithAnimations = this.applyAnimations(currState.hexData);
         this.hexesToDelete = currState.hexesToDelete;
         this.hexData = hexDataWithAnimations;
-      });
-
-    this.hexManagementService.state$
-      .pipe(takeUntilDestroyed())
-      .pipe(distinctUntilChanged((prev, curr) => isSameHexArray(prev.backgroundHexCoords, curr.backgroundHexCoords)))
-      .subscribe((state) => {
-        this.backgroundHexCoords = state.backgroundHexCoords;
       });
   }
 
