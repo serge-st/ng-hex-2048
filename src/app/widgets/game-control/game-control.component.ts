@@ -21,7 +21,7 @@ import { DesktopBreakpointDirective } from '@app/shared/directives';
 export class GameControlComponent {
   radius!: number;
   hexData!: HexData[];
-  isAnimatingOrTransitioning!: boolean;
+  isInProgress!: boolean;
   isDesktop!: boolean;
 
   get maxHexCount(): number {
@@ -50,15 +50,15 @@ export class GameControlComponent {
 
     this.hexManagementService.state$
       .pipe(takeUntilDestroyed())
-      .pipe(distinctUntilChanged((prev, curr) => prev.isAnimatingOrTransitioning === curr.isAnimatingOrTransitioning))
+      .pipe(distinctUntilChanged((prev, curr) => prev.isInProgress === curr.isInProgress))
       .subscribe((state) => {
-        this.isAnimatingOrTransitioning = state.isAnimatingOrTransitioning;
+        this.isInProgress = state.isInProgress;
       });
   }
 
   move(directionKey: DirectionKey | undefined): void {
     if (!directionKey) return;
-    if (this.isAnimatingOrTransitioning) return;
+    if (this.isInProgress) return;
     this.performMove(DIRECTION[directionKey]);
   }
 

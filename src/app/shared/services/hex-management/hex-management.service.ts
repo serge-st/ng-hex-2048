@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { HexCoord, HexCoordWithValue, HexData } from '@app/shared/interfaces';
 import { HexManagementState } from './interfaces/hex-management-state';
 import { hexagonIDGenerator, sortHexDataArray } from '@app/shared/helpers';
@@ -11,7 +11,7 @@ const initialState: HexManagementState = {
   hexData: [],
   hexesToDelete: [],
   backgroundHexCoords: [],
-  isAnimatingOrTransitioning: true,
+  isInProgress: true,
 };
 
 @Injectable({
@@ -48,9 +48,9 @@ export class HexManagementService {
     this.setState({ hexData: sortHexDataArray(hexData) });
   }
 
-  setIsAnimatingOrTransitioning(isAnimatingOrTransitioning: boolean): void {
-    if (this.getState().isAnimatingOrTransitioning === isAnimatingOrTransitioning) return;
-    this.setState({ isAnimatingOrTransitioning });
+  setisInProgress(isInProgress: boolean): void {
+    if (this.getState().isInProgress === isInProgress) return;
+    this.setState({ isInProgress });
   }
 
   setHexDataAndHexesToDelete(hexData: HexData[], hexesToDelete: HexData[]): void {
@@ -74,9 +74,19 @@ export class HexManagementService {
   }
 
   getNewHexCoords(radius: number, userHexData: HexData[]): Observable<HexData[]> {
+    this.setState({ isInProgress: true });
+
     const url = `${this.serviceURL}/${radius}`;
+
+    const timeout = setTimeout(() => {
+      throw new Error(
+        'Seems that the request is taking too long\nAs a web-based game it relies on your internet speed for communication between client and server',
+      );
+    }, 1500);
+
     return this.http.post<HexCoordWithValue[]>(url, JSON.stringify(userHexData), this.httpOptions).pipe(
       tap(() => this.initializeHexIDGenerator()),
+      tap(() => clearTimeout(timeout)),
       map((response) => this.transformIntoHexData(response)),
     );
   }

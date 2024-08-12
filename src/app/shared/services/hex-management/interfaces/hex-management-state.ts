@@ -4,7 +4,7 @@ export interface HexManagementState {
   hexData: HexData[];
   hexesToDelete: HexData[];
   backgroundHexCoords: HexCoord[];
-  isAnimatingOrTransitioning: boolean;
+  isInProgress: boolean;
 }
 
 export type HexManagementStateKey = keyof HexManagementState;
