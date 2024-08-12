@@ -21,26 +21,18 @@ export class HexagonComponent extends GridUtilityComponent implements OnChanges 
   @Input({ required: true }) hexWidth!: number;
   @Input() isSetup = false;
 
-  @HostBinding('class.background-hex') get backgroundHexClass() {
-    return Boolean(!this.value);
-  }
-  @HostBinding('class.setup') get setupClass() {
-    return this.isSetup;
-  }
-  @HostBinding('class.zoom-in') get zoomInClass() {
-    return this.animation === 'zoom-in';
-  }
-  @HostBinding('class.move') get moveClass() {
-    return this.animation === 'move';
-  }
-  @HostBinding('class.merge') get mergeClass() {
-    return this.animation === 'merge';
-  }
-  @HostBinding('class.delete') get deleteClass() {
-    return this.animation === 'delete';
+  @HostBinding('class') get cssClasses() {
+    return {
+      'background-hex': Boolean(!this.value),
+      setup: this.isSetup,
+      'zoom-in': this.animation === 'zoom-in',
+      move: this.animation === 'move',
+      merge: this.animation === 'merge',
+      delete: this.animation === 'delete',
+    };
   }
   @HostBinding('style') get cssVariables() {
-    return getCSSVariableString(this.styleVariables);
+    return this.styleVariables ? getCSSVariableString(this.styleVariables) : undefined;
   }
   @HostBinding('style.--background-color') get backgroundColor() {
     return isHexData(this.hexDetails) ? this.colors[Math.log2(this.hexDetails.value) - 1] : undefined;
