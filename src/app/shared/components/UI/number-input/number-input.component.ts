@@ -39,9 +39,9 @@ export class NumberInputComponent {
 
   validate(value: number): void {
     if (this.minValue && value < this.minValue) {
-      this.setError(`Value should be greater than ${this.minValue}`);
+      this.setError(`Value should be ${this.minValue} or more`);
     } else if (this.maxValue && value > this.maxValue) {
-      this.setError(`Value should be less than ${this.maxValue}`);
+      this.setError(`Value should be ${this.maxValue} or less`);
     } else {
       this.clearError();
     }
