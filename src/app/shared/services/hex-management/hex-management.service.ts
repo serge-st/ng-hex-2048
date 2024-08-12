@@ -48,7 +48,7 @@ export class HexManagementService {
     this.setState({ hexData: sortHexDataArray(hexData) });
   }
 
-  setisInProgress(isInProgress: boolean): void {
+  setIsInProgress(isInProgress: boolean): void {
     if (this.getState().isInProgress === isInProgress) return;
     this.setState({ isInProgress });
   }

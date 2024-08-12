@@ -60,12 +60,12 @@ export class HexagonComponent extends GridUtilityComponent implements OnChanges 
 
   @HostListener('animationstart')
   onAnimationstart(): void {
-    this.hexManagementService.setisInProgress(true);
+    this.hexManagementService.setIsInProgress(true);
   }
 
   @HostListener('transitionstart')
   onTransitionstart(): void {
-    this.hexManagementService.setisInProgress(true);
+    this.hexManagementService.setIsInProgress(true);
   }
 
   @HostListener('animationend')
@@ -73,14 +73,14 @@ export class HexagonComponent extends GridUtilityComponent implements OnChanges 
     if (!isHexData(this.hexDetails)) return;
     if (this.hexDetails.animation === 'delete') return;
     this.hexDetails.animation = 'none';
-    this.hexManagementService.setisInProgress(false);
+    this.hexManagementService.setIsInProgress(false);
   }
 
   @HostListener('transitionend')
   onTransitionend(): void {
     if (!isHexData(this.hexDetails)) return;
     this.hexDetails.animation = 'none';
-    this.hexManagementService.setisInProgress(false);
+    this.hexManagementService.setIsInProgress(false);
   }
 
   hexHeight!: number;
