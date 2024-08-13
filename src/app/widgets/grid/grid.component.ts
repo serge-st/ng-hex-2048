@@ -19,7 +19,7 @@ import { getCSSVariableString, isHexAEqualHexB, isSameHexArray } from '@app/shar
 })
 export class GridComponent extends GridUtilityComponent {
   @HostBinding('style') get cssVariables() {
-    return getCSSVariableString(this.styleVariables);
+    return this.styleVariables ? getCSSVariableString(this.styleVariables) : undefined;
   }
 
   radius!: number;
@@ -30,6 +30,8 @@ export class GridComponent extends GridUtilityComponent {
   hexData: HexData[] = [];
   hexesToDelete: HexData[] = [];
   backgroundHexCoords: HexCoord[] = [];
+
+  // params calculated within the component
   hexHeight!: number;
   gridWidth!: number;
   gridHeight!: number;
