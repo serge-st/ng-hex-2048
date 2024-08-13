@@ -17,9 +17,9 @@ import { distinctUntilChanged } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameSetupComponent implements OnInit {
-  @Input({ required: true }) radius!: number;
-  @Input({ required: true }) gap!: number;
-  @Input({ required: true }) hexWidth!: number;
+  @Input({ required: true }) radius!: number | null;
+  @Input({ required: true }) gap!: number | null;
+  @Input({ required: true }) hexWidth!: number | null;
 
   isDesktop!: boolean;
   isMobile!: boolean;
