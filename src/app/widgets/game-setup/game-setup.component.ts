@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { ButtonComponent, NumberInputComponent, LinkComponent } from '@app/shared/components/UI';
+import { ButtonComponent, NumberInputComponent } from '@app/shared/components/UI';
 import { BreakpointObserverService, GameSetupService, HexManagementService } from '@app/shared/services';
 import { isEqual } from 'lodash';
 import { distinctUntilChanged } from 'rxjs';
@@ -11,7 +11,7 @@ import { distinctUntilChanged } from 'rxjs';
 @Component({
   selector: 'app-game-setup',
   standalone: true,
-  imports: [FormsModule, NumberInputComponent, RouterLink, ButtonComponent, LinkComponent, NgClass],
+  imports: [FormsModule, NumberInputComponent, RouterLink, ButtonComponent, NgClass],
   templateUrl: './game-setup.component.html',
   styleUrl: './game-setup.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
