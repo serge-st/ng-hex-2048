@@ -1,8 +1,8 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonComponent, NumberInputComponent, LinkComponent } from '@app/shared/components/UI';
 import { BreakpointObserverService, GameSetupService, HexManagementService } from '@app/shared/services';
 import { isEqual } from 'lodash';
@@ -23,11 +23,21 @@ export class GameSetupComponent implements OnInit {
 
   isDesktop!: boolean;
   isMobile!: boolean;
+  isError = false;
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeydown(event: KeyboardEvent): void {
+    if (event.code !== 'Enter') return;
+    if (this.isError) return;
+
+    this.startGame();
+  }
 
   constructor(
     readonly gameSetupService: GameSetupService,
     private readonly hexManagementService: HexManagementService,
     private readonly breakpointObserverService: BreakpointObserverService,
+    private readonly router: Router,
   ) {
     this.subscribeToBreakpointObserverService();
   }
@@ -39,6 +49,11 @@ export class GameSetupComponent implements OnInit {
 
   startGame(): void {
     this.gameSetupService.setGameState('in-progress');
+    this.router.navigate(['game']);
+  }
+
+  setIsError(...childen: NumberInputComponent[]): void {
+    this.isError = childen.some(({ isError }) => isError);
   }
 
   private subscribeToBreakpointObserverService(): void {
