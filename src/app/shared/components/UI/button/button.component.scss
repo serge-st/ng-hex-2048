@@ -34,6 +34,7 @@ button:focus-visible {
 
 button:disabled {
   color: var(--dsbld-color);
+  cursor: initial;
   background-color: var(--dsbld-bg-color);
   border-color: var(--dsbld-border-color);
 }
