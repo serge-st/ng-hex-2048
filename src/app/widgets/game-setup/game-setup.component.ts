@@ -1,29 +1,26 @@
-import { AsyncPipe, NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ButtonComponent, NumberInputComponent } from '@app/shared/components/UI';
-import { LinkComponent } from '@app/shared/components/UI';
-import { BreakpointObserverService } from '@app/shared/services/breakpoint-observer';
-import { GameSetupService } from '@app/shared/services/game-setup';
-import { HexManagementService } from '@app/shared/services/hex-management';
-import { GameState } from '@app/shared/types';
-import { Observable, distinctUntilChanged, map } from 'rxjs';
+import { ButtonComponent, NumberInputComponent, LinkComponent } from '@app/shared/components/UI';
+import { BreakpointObserverService, GameSetupService, HexManagementService } from '@app/shared/services';
+import { isEqual } from 'lodash';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-game-setup',
   standalone: true,
-  imports: [FormsModule, NumberInputComponent, AsyncPipe, RouterLink, ButtonComponent, LinkComponent, NgClass],
+  imports: [FormsModule, NumberInputComponent, RouterLink, ButtonComponent, LinkComponent, NgClass],
   templateUrl: './game-setup.component.html',
   styleUrl: './game-setup.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameSetupComponent implements OnInit {
-  radius$!: Observable<number>;
-  gap$!: Observable<number>;
-  hexWidth$!: Observable<number>;
-  gameState$!: Observable<GameState>;
+  @Input({ required: true }) radius!: number;
+  @Input({ required: true }) gap!: number;
+  @Input({ required: true }) hexWidth!: number;
+
   isDesktop!: boolean;
   isMobile!: boolean;
 
@@ -32,14 +29,22 @@ export class GameSetupComponent implements OnInit {
     private readonly hexManagementService: HexManagementService,
     private readonly breakpointObserverService: BreakpointObserverService,
   ) {
-    this.radius$ = this.gameSetupService.state$.pipe(map((state) => state.radius));
-    this.gap$ = this.gameSetupService.state$.pipe(map((state) => state.gap));
-    this.hexWidth$ = this.gameSetupService.state$.pipe(map((state) => state.hexWidth));
-    this.gameState$ = this.gameSetupService.state$.pipe(map((state) => state.gameState));
+    this.subscribeToBreakpointObserverService();
+  }
 
+  ngOnInit(): void {
+    this.setGameState();
+    this.setHexData();
+  }
+
+  startGame(): void {
+    this.gameSetupService.setGameState('in-progress');
+  }
+
+  private subscribeToBreakpointObserverService(): void {
     this.breakpointObserverService.state$
       .pipe(takeUntilDestroyed())
-      .pipe(distinctUntilChanged((prev, curr) => prev.isDesktop === curr.isDesktop || prev.isMobile === curr.isMobile))
+      .pipe(distinctUntilChanged((prev, curr) => isEqual(prev, curr)))
       .subscribe((state) => {
         this.isDesktop = state.isDesktop;
         this.isMobile = state.isMobile;
@@ -48,18 +53,16 @@ export class GameSetupComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
-    if (this.gameSetupService.getGameState() !== 'setup') {
-      this.gameSetupService.setGameState('setup');
-    }
+  private setGameState(): void {
+    if (this.gameSetupService.getGameState() === 'setup') return;
 
-    if (this.hexManagementService.getHexData().length > 0) {
-      this.hexManagementService.setHexData([]);
-    }
+    this.gameSetupService.setGameState('setup');
   }
 
-  startGame(): void {
-    this.gameSetupService.setGameState('in-progress');
+  private setHexData(): void {
+    if (this.hexManagementService.getHexData().length === 0) return;
+
+    this.hexManagementService.setHexData([]);
   }
 
   private updateHexWidth(): void {
