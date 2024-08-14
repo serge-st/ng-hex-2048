@@ -79,7 +79,7 @@ export class GridComponent extends GridUtilityComponent implements OnChanges {
   }
 
   setGridWidth(): void {
-    if (!this.hexWidth || !this.gap || !this.radius) return;
+    if (!this.hexWidth || this.gap === null || !this.radius) return;
 
     const hexesWidth = this.hexWidth + this.hexWidth * this.radius * this.HEX_HORIZONTAL_SPAN_RATIO * 2;
     const gapCompensation = this.radius * this.HEX_HORIZONTAL_SPAN_RATIO * 2 * this.gap;
@@ -89,7 +89,7 @@ export class GridComponent extends GridUtilityComponent implements OnChanges {
   }
 
   setGridHeight(): void {
-    if (!this.gap || !this.radius) return;
+    if (this.gap === null || !this.radius) return;
 
     const hexesHeight = this.hexHeight * (2 * this.radius + 1);
     const gapCompensation = this.radius * this.coordToPixel.f3 * this.gap;
