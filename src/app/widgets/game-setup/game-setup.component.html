@@ -6,24 +6,27 @@
       [minValue]="1"
       [maxValue]="8"
       label="Radius"
-      [value]="(radius$ | async) || undefined"
-      (valueChange)="gameSetupService.setRadius($event)"
+      [value]="radius"
+      (valueChange)="setIsError(radiusInput, gapInput, hexWidthInput); gameSetupService.setRadius($event)"
+      #radiusInput
     ></app-number-input>
     <app-number-input
       [minValue]="4"
       label="Gap"
-      [value]="(gap$ | async) || undefined"
-      (valueChange)="gameSetupService.setGap($event)"
+      [value]="gap"
+      (valueChange)="setIsError(radiusInput, gapInput, hexWidthInput); gameSetupService.setGap($event)"
       [step]="4"
+      #gapInput
     ></app-number-input>
     <app-number-input
       [minValue]="40"
       label="Hex Width"
-      [value]="(hexWidth$ | async) || undefined"
-      (valueChange)="gameSetupService.setHexWidth($event)"
+      [value]="hexWidth"
+      (valueChange)="setIsError(radiusInput, gapInput, hexWidthInput); gameSetupService.setHexWidth($event)"
       [step]="10"
+      #hexWidthInput
     ></app-number-input>
   </div>
 
-  <app-link to="/game" styleType="primary-btn" (appLinkEvent)="startGame()">Start Game</app-link>
+  <app-button [disabled]="isError" (appButtonEvent)="startGame()">Start Game</app-button>
 </fieldset>

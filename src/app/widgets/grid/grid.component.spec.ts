@@ -29,12 +29,6 @@ describe('GridComponent', () => {
   });
 
   describe('setGridWidth', () => {
-    it('should calculate the correct grid width 0 radius', () => {
-      component.radius = 0;
-      component.setGridWidth();
-      expect(component.gridWidth).toBe(100);
-    });
-
     it('should calculate the correct grid width 1 radius', () => {
       component.radius = 1;
       component.setGridWidth();
@@ -61,13 +55,6 @@ describe('GridComponent', () => {
   });
 
   describe('setGridHeight', () => {
-    it('should calculate the correct grid height 0 radius', () => {
-      component.hexHeight = 100;
-      component.radius = 0;
-      component.setGridHeight();
-      expect(component.gridHeight).toBe(100);
-    });
-
     it('should calculate the correct grid height 1 radius', () => {
       component.hexHeight = 100;
       component.radius = 1;

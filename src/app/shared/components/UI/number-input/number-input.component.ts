@@ -9,7 +9,7 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 })
 export class NumberInputComponent {
   @Input({ required: true }) label: string | undefined;
-  @Input() value: number | undefined = 0;
+  @Input() value: number | null = 0;
   @Input() step: number = 1;
   @Input() minValue?: number;
   @Input() maxValue?: number;
@@ -34,7 +34,7 @@ export class NumberInputComponent {
     if (isNaN(parsedValue)) return;
 
     this.setNewValue(parsedValue);
-    this.valueChange.emit(this.value);
+    this.value && this.valueChange.emit(this.value);
   }
 
   validate(value: number): void {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { distinctUntilChanged } from 'rxjs';
 import { GameSetupService } from '@app/shared/services/game-setup';
@@ -18,8 +18,9 @@ import { DesktopBreakpointDirective } from '@app/shared/directives';
   templateUrl: './game-control.component.html',
   styleUrl: './game-control.component.scss',
 })
-export class GameControlComponent {
-  radius!: number;
+export class GameControlComponent implements OnChanges {
+  @Input({ required: true }) radius!: number;
+
   hexData!: HexData[];
   isInProgress!: boolean;
   isDesktop!: boolean;
@@ -28,24 +29,22 @@ export class GameControlComponent {
     return 1 + 3 * this.radius * (this.radius + 1);
   }
 
+  ngOnChanges(): void {
+    // TODO: handle subscribtions properly
+    if (this.hexData.length === 0) this.setNextTurnHexData();
+  }
+
   constructor(
     private readonly gameSetupService: GameSetupService,
     private readonly hexManagementService: HexManagementService,
   ) {
-    this.gameSetupService.state$
-      .pipe(takeUntilDestroyed())
-      .pipe(distinctUntilChanged((prev, curr) => prev.radius === curr.radius))
-      .subscribe((state) => {
-        this.radius = state.radius;
-      });
-
     this.hexManagementService.state$
       .pipe(takeUntilDestroyed())
       .pipe(distinctUntilChanged((prev, curr) => isSameHexArray(prev.hexData, curr.hexData)))
       .subscribe((state) => {
         this.hexData = state.hexData;
 
-        if (state.hexData.length === 0) this.setNextTurnHexData();
+        // if (state.hexData.length === 0) this.setNextTurnHexData();
       });
 
     this.hexManagementService.state$

@@ -7,10 +7,15 @@
     <app-game-over-control></app-game-over-control>
   </ng-container>
 
-  <app-grid></app-grid>
+  <app-grid
+    [radius]="radius$ | async"
+    [gap]="gap$ | async"
+    [hexWidth]="hexWidth$ | async"
+    [gameState]="gameState$ | async"
+  ></app-grid>
   <ng-container *ngIf="!(isWin$ | async)">
     <h2>Game Controls</h2>
-    <app-game-control></app-game-control>
+    <app-game-control [radius]="(radius$ | async)!"></app-game-control>
     <article>
       <p *appShowOnDesktop="true">Click the buttons to move the hexagons, or use your keyboard keys</p>
 

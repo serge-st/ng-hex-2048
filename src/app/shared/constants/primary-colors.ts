@@ -20,8 +20,8 @@ export const PRIMARY_COLORS: ColorType = {
     boxShadowRGB: '49 132 253',
   },
   disabled: {
-    backgroundColor: '#0d6efd',
-    borderColor: '#0d6efd',
+    backgroundColor: '#6fa9ff',
+    borderColor: '#6fa9ff',
     color: '#fff',
   },
 } as const;
