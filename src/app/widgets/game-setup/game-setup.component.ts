@@ -1,10 +1,10 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ButtonComponent, NumberInputComponent } from '@app/shared/components/UI';
-import { BreakpointObserverService, GameSetupService, HexManagementService } from '@app/shared/services';
+import { BreakpointObserverService, GameSetupService } from '@app/shared/services';
 import { isEqual } from 'lodash';
 import { distinctUntilChanged } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { distinctUntilChanged } from 'rxjs';
   styleUrl: './game-setup.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GameSetupComponent implements OnInit {
+export class GameSetupComponent {
   @Input({ required: true }) radius!: number | null;
   @Input({ required: true }) gap!: number | null;
   @Input({ required: true }) hexWidth!: number | null;
@@ -35,16 +35,10 @@ export class GameSetupComponent implements OnInit {
 
   constructor(
     readonly gameSetupService: GameSetupService,
-    private readonly hexManagementService: HexManagementService,
     private readonly breakpointObserverService: BreakpointObserverService,
     private readonly router: Router,
   ) {
     this.subscribeToBreakpointObserverService();
-  }
-
-  ngOnInit(): void {
-    this.setGameState();
-    this.setHexData();
   }
 
   startGame(): void {
@@ -66,18 +60,6 @@ export class GameSetupComponent implements OnInit {
 
         this.updateHexWidth();
       });
-  }
-
-  private setGameState(): void {
-    if (this.gameSetupService.getGameState() === 'setup') return;
-
-    this.gameSetupService.setGameState('setup');
-  }
-
-  private setHexData(): void {
-    if (this.hexManagementService.getHexData().length === 0) return;
-
-    this.hexManagementService.setHexData([]);
   }
 
   private updateHexWidth(): void {

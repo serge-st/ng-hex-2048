@@ -57,6 +57,7 @@ export class GridComponent extends GridUtilityComponent implements OnChanges {
     this.updateProperies(!!radius);
   }
 
+  // TODO probably remove completely
   private manageHexManagementServiceMainUpdates(): void {
     this.hexManagementService.state$
       .pipe(takeUntilDestroyed())
