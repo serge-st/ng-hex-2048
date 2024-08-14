@@ -1,6 +1,11 @@
 <main>
   <h1>Hexagonal 2048</h1>
   <app-game-setup [radius]="radius$ | async" [gap]="gap$ | async" [hexWidth]="hexWidth$ | async"></app-game-setup>
-  <app-grid></app-grid>
+  <app-grid
+    [radius]="radius$ | async"
+    [gap]="gap$ | async"
+    [hexWidth]="hexWidth$ | async"
+    [gameState]="gameState$ | async"
+  ></app-grid>
   <app-link to="/about" (appLinkEvent)="clearSessionStorage()">Back to About Page</app-link>
 </main>

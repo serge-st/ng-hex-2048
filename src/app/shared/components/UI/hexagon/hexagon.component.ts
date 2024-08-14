@@ -17,8 +17,8 @@ import { HEX_COLORS } from './constants';
 export class HexagonComponent extends GridUtilityComponent implements OnChanges {
   @Input({ required: true }) hexDetails!: HexCoord | HexData;
   @Input({ required: true }) offset!: Position;
-  @Input({ required: true }) gap!: number;
-  @Input({ required: true }) hexWidth!: number;
+  @Input({ required: true }) gap!: number | null;
+  @Input({ required: true }) hexWidth!: number | null;
   @Input() isSetup = false;
 
   @HostBinding('class') get cssClasses() {
@@ -105,6 +105,8 @@ export class HexagonComponent extends GridUtilityComponent implements OnChanges 
   }
 
   setPixelCoords(): void {
+    if (!this.hexWidth || !this.gap) return;
+
     const hexRadius = this.hexWidth / 2;
     const gapCoefficient = hexRadius + this.gap / 2;
     const x = (this.coordToPixel.f0 * this.hexDetails.q + this.coordToPixel.f1 * this.hexDetails.r) * gapCoefficient;
@@ -121,7 +123,8 @@ export class HexagonComponent extends GridUtilityComponent implements OnChanges 
   }
 
   updateProperies(): void {
-    if (!this.hexDetails) return;
+    if (!this.hexDetails || !this.hexWidth) return;
+
     this.setHexHeight();
     this.setPixelCoords();
     this.setStyleVariables(this.hexWidth, this.hexHeight, this.pixelCoord.x, this.pixelCoord.y);

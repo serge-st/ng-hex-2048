@@ -6,6 +6,7 @@ import { VIEWED_ABOUT_PAGE_STORAGE_KEY } from '@app/shared/constants';
 import { GameSetupService } from '@app/shared/services/game-setup';
 import { map } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { HexManagementService } from '@app/shared/services';
 
 @Component({
   selector: 'app-game-setup-page',

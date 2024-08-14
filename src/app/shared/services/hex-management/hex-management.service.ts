@@ -10,7 +10,6 @@ import { environment } from '../../../../environments/environment';
 const initialState: HexManagementState = {
   hexData: [],
   hexesToDelete: [],
-  backgroundHexCoords: [],
   isInProgress: true,
 };
 
@@ -38,10 +37,6 @@ export class HexManagementService {
 
   private setState(newState: Partial<HexManagementState>): void {
     this.state.next({ ...this.getState(), ...newState });
-  }
-
-  setBackgroundHexCoords(hexCoords: HexCoord[]): void {
-    this.setState({ backgroundHexCoords: hexCoords });
   }
 
   setHexData(hexData: HexData[]): void {

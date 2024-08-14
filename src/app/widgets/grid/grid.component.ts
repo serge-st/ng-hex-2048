@@ -1,12 +1,11 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { HexagonComponent } from '@app/shared/components/UI';
 import { GridUtilStyleVariables, Position, HexData, HexCoord } from '@app/shared/interfaces';
 import { GridUtilityComponent } from '@app/shared/components';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable, distinctUntilChanged, map, pairwise } from 'rxjs';
-import { GameSetupService } from '@app/shared/services/game-setup';
-import { HexManagementService } from '@app/shared/services/hex-management';
+import { distinctUntilChanged, pairwise } from 'rxjs';
+import { HexManagementService } from '@app/shared/services';
 import { GameState } from '@app/shared/types';
 import { getCSSVariableString, isHexAEqualHexB, isSameHexArray } from '@app/shared/helpers';
 
@@ -17,19 +16,20 @@ import { getCSSVariableString, isHexAEqualHexB, isSameHexArray } from '@app/shar
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.scss',
 })
-export class GridComponent extends GridUtilityComponent {
+export class GridComponent extends GridUtilityComponent implements OnChanges {
   @HostBinding('style') get cssVariables() {
     return this.styleVariables ? getCSSVariableString(this.styleVariables) : undefined;
   }
 
-  radius!: number;
-  gap!: number;
-  hexWidth!: number;
-  gameState!: GameState;
+  @Input({ required: true }) radius!: number | null;
+  @Input({ required: true }) gap!: number | null;
+  @Input({ required: true }) hexWidth!: number | null;
+  @Input({ required: true }) gameState!: GameState | null;
+
+  // hex data values
   previousHexData: HexData[] = [];
   hexData: HexData[] = [];
   hexesToDelete: HexData[] = [];
-  backgroundHexCoords: HexCoord[] = [];
 
   // params calculated within the component
   hexHeight!: number;
@@ -37,42 +37,24 @@ export class GridComponent extends GridUtilityComponent {
   gridHeight!: number;
   offset!: Position;
   styleVariables!: GridUtilStyleVariables;
+  backgroundHexCoords!: HexCoord[];
 
   private readonly HEX_HORIZONTAL_SPAN_RATIO = 0.75;
 
-  get isSetup$(): Observable<boolean> {
-    return this.gameSetupService.state$.pipe(map((state) => state.gameState === 'setup'));
+  get isSetup(): boolean {
+    return this.gameState === 'setup';
   }
 
-  constructor(
-    private readonly gameSetupService: GameSetupService,
-    private readonly hexManagementService: HexManagementService,
-  ) {
+  constructor(private readonly hexManagementService: HexManagementService) {
     super();
 
-    this.manageGameSetupServiceUpdates();
-    this.manageHexManagementServiceBackgrondUpdates();
     this.manageHexManagementServiceMainUpdates();
   }
 
-  private manageGameSetupServiceUpdates(): void {
-    this.gameSetupService.state$.pipe(takeUntilDestroyed()).subscribe((state) => {
-      this.radius = state.radius;
-      this.gap = state.gap;
-      this.hexWidth = state.hexWidth;
-      this.gameState = state.gameState;
+  ngOnChanges(changes: SimpleChanges): void {
+    const { radius } = changes;
 
-      this.updateProperies();
-    });
-  }
-
-  private manageHexManagementServiceBackgrondUpdates(): void {
-    this.hexManagementService.state$
-      .pipe(takeUntilDestroyed())
-      .pipe(distinctUntilChanged((prev, curr) => isSameHexArray(prev.backgroundHexCoords, curr.backgroundHexCoords)))
-      .subscribe((state) => {
-        this.backgroundHexCoords = state.backgroundHexCoords;
-      });
+    this.updateProperies(!!radius);
   }
 
   private manageHexManagementServiceMainUpdates(): void {
@@ -97,6 +79,8 @@ export class GridComponent extends GridUtilityComponent {
   }
 
   setGridWidth(): void {
+    if (!this.hexWidth || !this.gap || !this.radius) return;
+
     const hexesWidth = this.hexWidth + this.hexWidth * this.radius * this.HEX_HORIZONTAL_SPAN_RATIO * 2;
     const gapCompensation = this.radius * this.HEX_HORIZONTAL_SPAN_RATIO * 2 * this.gap;
     const padding = this.gap * 2 + gapCompensation;
@@ -105,6 +89,8 @@ export class GridComponent extends GridUtilityComponent {
   }
 
   setGridHeight(): void {
+    if (!this.gap || !this.radius) return;
+
     const hexesHeight = this.hexHeight * (2 * this.radius + 1);
     const gapCompensation = this.radius * this.coordToPixel.f3 * this.gap;
     const padding = this.gap * 2 + gapCompensation;
@@ -113,13 +99,15 @@ export class GridComponent extends GridUtilityComponent {
   }
 
   setOffset(): void {
+    if (!this.hexWidth) return;
+
     this.offset = {
       x: this.gridWidth / 2 - this.hexWidth / 2,
       y: this.gridHeight / 2 - this.hexHeight / 2,
     };
   }
 
-  updateProperies(): void {
+  updateProperies(isNewRadius: boolean): void {
     if (!this.hexWidth) return;
 
     this.setHexHeight();
@@ -131,23 +119,21 @@ export class GridComponent extends GridUtilityComponent {
 
     this.setStyleVariables(this.gridWidth, this.gridHeight);
 
-    if (this.gameState === 'setup') this.setBackgroundHexCoords();
+    isNewRadius && this.setBackgroundHexCoords();
   }
 
   setBackgroundHexCoords(): void {
-    const localHexCoords: HexCoord[] = [];
+    if (!this.radius) return;
+
+    this.backgroundHexCoords = [];
 
     for (let q = -this.radius; q <= this.radius; q++) {
       for (let r = Math.max(-this.radius, -q - this.radius); r <= Math.min(this.radius, -q + this.radius); r++) {
         // added "|| 0" to prevent "-0" values
         const s = -q - r || 0;
-        localHexCoords.push({ q, r, s });
+        this.backgroundHexCoords.push({ q, r, s });
       }
     }
-
-    if (localHexCoords.length === this.backgroundHexCoords.length) return;
-
-    if (this.gameState === 'setup') this.hexManagementService.setBackgroundHexCoords(localHexCoords);
   }
 
   private isNewHex(hex: HexData): boolean {

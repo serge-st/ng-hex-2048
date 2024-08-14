@@ -4,9 +4,9 @@
   [gap]="gap"
   [hexDetails]="hex"
   [offset]="offset"
-  [isSetup]="(isSetup$ | async)!"
+  [isSetup]="isSetup"
 ></app-hexagon>
-<ng-container *ngIf="!(isSetup$ | async)">
+<ng-container *ngIf="!isSetup">
   <app-hexagon
     *ngFor="let hex of hexesToDelete; trackBy: trackByID"
     [hexWidth]="hexWidth"

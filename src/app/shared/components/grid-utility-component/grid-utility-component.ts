@@ -6,7 +6,7 @@ import { GridUtilStyleVariables, CoordToPixel } from '@app/shared/interfaces';
   template: '',
 })
 export abstract class GridUtilityComponent {
-  abstract hexWidth: number;
+  abstract hexWidth: number | null;
   abstract hexHeight: number;
   abstract styleVariables: GridUtilStyleVariables;
 
@@ -22,6 +22,7 @@ export abstract class GridUtilityComponent {
   }
 
   setHexHeight(): void {
+    if (!this.hexWidth) return;
     this.hexHeight = Math.sqrt(3) * (this.hexWidth / 2);
   }
 
