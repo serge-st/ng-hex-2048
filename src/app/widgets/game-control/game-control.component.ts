@@ -22,7 +22,7 @@ export class GameControlComponent implements OnChanges {
   @Input({ required: true }) radius!: number;
 
   hexData!: HexData[];
-  isInProgress!: boolean;
+  isLoading!: boolean;
   isDesktop!: boolean;
 
   get maxHexCount(): number {
@@ -49,15 +49,15 @@ export class GameControlComponent implements OnChanges {
 
     this.hexManagementService.state$
       .pipe(takeUntilDestroyed())
-      .pipe(distinctUntilChanged((prev, curr) => prev.isInProgress === curr.isInProgress))
+      .pipe(distinctUntilChanged((prev, curr) => prev.isLoading === curr.isLoading))
       .subscribe((state) => {
-        this.isInProgress = state.isInProgress;
+        this.isLoading = state.isLoading;
       });
   }
 
   move(directionKey: DirectionKey | undefined): void {
     if (!directionKey) return;
-    if (this.isInProgress) return;
+    if (this.isLoading) return;
     this.performMove(DIRECTION[directionKey]);
   }
 

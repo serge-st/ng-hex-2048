@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
-import { HexCoord, HexCoordWithValue, HexData } from '@app/shared/interfaces';
+import { HexCoordWithValue, HexData } from '@app/shared/interfaces';
 import { HexManagementState } from './interfaces/hex-management-state';
 import { hexagonIDGenerator, sortHexDataArray } from '@app/shared/helpers';
 import { SERVER_ENDPOINT } from '@app/shared/constants';
@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environment';
 const initialState: HexManagementState = {
   hexData: [],
   hexesToDelete: [],
-  isInProgress: true,
+  isLoading: true,
 };
 
 @Injectable({
@@ -43,9 +43,9 @@ export class HexManagementService {
     this.setState({ hexData: sortHexDataArray(hexData) });
   }
 
-  setIsInProgress(isInProgress: boolean): void {
-    if (this.getState().isInProgress === isInProgress) return;
-    this.setState({ isInProgress });
+  setIsLoading(isLoading: boolean): void {
+    if (this.getState().isLoading === isLoading) return;
+    this.setState({ isLoading });
   }
 
   setHexDataAndHexesToDelete(hexData: HexData[], hexesToDelete: HexData[]): void {
@@ -69,7 +69,7 @@ export class HexManagementService {
   }
 
   getNewHexCoords(radius: number, userHexData: HexData[]): Observable<HexData[]> {
-    this.setState({ isInProgress: true });
+    this.setIsLoading(true);
 
     const url = `${this.serviceURL}/${radius}`;
 

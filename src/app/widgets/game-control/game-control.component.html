@@ -1,66 +1,36 @@
 <ng-container *appShowOnDesktop="true">
   <div class="control-row">
-    <app-control-button [disabled]="isInProgress" directionLabel="Q" (moveEvent)="move($event)">Q</app-control-button>
-    <app-control-button [disabled]="isInProgress" directionLabel="W" (moveEvent)="move($event)">W</app-control-button>
-    <app-control-button [disabled]="isInProgress" directionLabel="E" (moveEvent)="move($event)">E</app-control-button>
+    <app-control-button [disabled]="isLoading" directionLabel="Q" (moveEvent)="move($event)">Q</app-control-button>
+    <app-control-button [disabled]="isLoading" directionLabel="W" (moveEvent)="move($event)">W</app-control-button>
+    <app-control-button [disabled]="isLoading" directionLabel="E" (moveEvent)="move($event)">E</app-control-button>
   </div>
   <div class="control-row">
-    <app-control-button [disabled]="isInProgress" directionLabel="A" (moveEvent)="move($event)">A</app-control-button>
-    <app-control-button [disabled]="isInProgress" directionLabel="S" (moveEvent)="move($event)">S</app-control-button>
-    <app-control-button [disabled]="isInProgress" directionLabel="D" (moveEvent)="move($event)">D</app-control-button>
+    <app-control-button [disabled]="isLoading" directionLabel="A" (moveEvent)="move($event)">A</app-control-button>
+    <app-control-button [disabled]="isLoading" directionLabel="S" (moveEvent)="move($event)">S</app-control-button>
+    <app-control-button [disabled]="isLoading" directionLabel="D" (moveEvent)="move($event)">D</app-control-button>
   </div>
 </ng-container>
 
 <ng-container *appShowOnDesktop="false">
   <div class="control-row">
-    <app-control-button
-      [disabled]="isInProgress"
-      directionLabel="Q"
-      (moveEvent)="move($event)"
-      [width]="60"
-      [height]="60"
+    <app-control-button [disabled]="isLoading" directionLabel="Q" (moveEvent)="move($event)" [width]="60" [height]="60"
       >↖</app-control-button
     >
-    <app-control-button
-      [disabled]="isInProgress"
-      directionLabel="W"
-      (moveEvent)="move($event)"
-      [width]="60"
-      [height]="60"
+    <app-control-button [disabled]="isLoading" directionLabel="W" (moveEvent)="move($event)" [width]="60" [height]="60"
       >↑</app-control-button
     >
-    <app-control-button
-      [disabled]="isInProgress"
-      directionLabel="E"
-      (moveEvent)="move($event)"
-      [width]="60"
-      [height]="60"
+    <app-control-button [disabled]="isLoading" directionLabel="E" (moveEvent)="move($event)" [width]="60" [height]="60"
       >↗</app-control-button
     >
   </div>
   <div class="control-row">
-    <app-control-button
-      [disabled]="isInProgress"
-      directionLabel="A"
-      (moveEvent)="move($event)"
-      [width]="60"
-      [height]="60"
+    <app-control-button [disabled]="isLoading" directionLabel="A" (moveEvent)="move($event)" [width]="60" [height]="60"
       >↙</app-control-button
     >
-    <app-control-button
-      [disabled]="isInProgress"
-      directionLabel="S"
-      (moveEvent)="move($event)"
-      [width]="60"
-      [height]="60"
+    <app-control-button [disabled]="isLoading" directionLabel="S" (moveEvent)="move($event)" [width]="60" [height]="60"
       >↓</app-control-button
     >
-    <app-control-button
-      [disabled]="isInProgress"
-      directionLabel="D"
-      (moveEvent)="move($event)"
-      [width]="60"
-      [height]="60"
+    <app-control-button [disabled]="isLoading" directionLabel="D" (moveEvent)="move($event)" [width]="60" [height]="60"
       >↘</app-control-button
     >
   </div>

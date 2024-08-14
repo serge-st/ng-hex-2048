@@ -19,6 +19,7 @@ export class GameOverControlComponent {
   ) {}
 
   restartGame(): void {
+    // TODO: check if it works
     this.hexManagementService.setHexData([]);
     this.gameSetupService.setGameState('in-progress');
   }

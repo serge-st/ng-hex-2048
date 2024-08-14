@@ -13,6 +13,7 @@
     [hexWidth]="hexWidth$ | async"
     [gameState]="gameState$ | async"
   ></app-grid>
+
   <ng-container *ngIf="!(isWin$ | async)">
     <h2>Game Controls</h2>
     <app-game-control [radius]="(radius$ | async)!"></app-game-control>
