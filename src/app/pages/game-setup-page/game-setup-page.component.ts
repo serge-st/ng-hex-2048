@@ -40,7 +40,7 @@ export class GameSetupPageComponent implements OnInit {
   private setHexData(): void {
     if (this.hexManagementService.getHexData().length === 0) return;
 
-    this.hexManagementService.setHexData([]);
+    this.hexManagementService.setHexDataAndHexesToDelete([], []);
   }
 
   clearSessionStorage(): void {
