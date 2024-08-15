@@ -38,13 +38,13 @@ export class GamePageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.setHexData();
+    this.resetHexData();
   }
 
-  private setHexData(): void {
+  private resetHexData(): void {
     if (this.hexManagementService.getHexData().length === 0) return;
 
-    this.hexManagementService.setHexDataAndHexesToDelete([], []);
+    this.hexManagementService.resetState();
   }
 
   get isInProgress$(): Observable<boolean> {

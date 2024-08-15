@@ -19,7 +19,7 @@ import { DesktopBreakpointDirective } from '@app/shared/directives';
 })
 export class GameControlComponent implements OnInit, OnDestroy {
   @Input({ required: true }) radius!: number;
-  @Input() isLoading = false;
+  @Input() isLoading!: boolean;
   @Input() hexData: HexData[] = [];
 
   get maxHexCount(): number {
@@ -207,7 +207,7 @@ export class GameControlComponent implements OnInit, OnDestroy {
       return neighbors.some((neighbor) => neighbor && neighbor.value === hex.value);
     });
 
-    return canMerge;
+    return !canMerge;
   }
 
   isWin(hexData: HexData[]): boolean {

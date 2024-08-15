@@ -19,7 +19,7 @@ export class GameOverControlComponent {
   ) {}
 
   restartGame(): void {
-    this.hexManagementService.setHexDataAndHexesToDelete([], []);
+    this.hexManagementService.resetState();
     this.gameSetupService.setGameState('in-progress');
   }
 }

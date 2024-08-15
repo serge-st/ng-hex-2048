@@ -39,6 +39,10 @@ export class HexManagementService {
     this.state.next({ ...this.getState(), ...newState });
   }
 
+  resetState(): void {
+    this.state.next(initialState);
+  }
+
   setHexData(hexData: HexData[]): void {
     this.setState({ hexData: sortHexDataArray(hexData) });
   }

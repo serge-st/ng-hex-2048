@@ -28,7 +28,6 @@ export class GameSetupPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.setGameState();
-    this.setHexData;
   }
 
   private setGameState(): void {
