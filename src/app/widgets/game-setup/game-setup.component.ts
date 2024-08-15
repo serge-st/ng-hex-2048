@@ -63,6 +63,11 @@ export class GameSetupComponent {
   }
 
   private updateHexWidth(): void {
-    this.isDesktop ? this.gameSetupService.setHexWidth(100) : this.gameSetupService.setHexWidth(50);
+    const SMALL_HEX_WIDTH = 50;
+    const MEDIUM_HEX_WIDTH = 100;
+
+    this.isDesktop
+      ? this.gameSetupService.setHexWidth(MEDIUM_HEX_WIDTH)
+      : this.gameSetupService.setHexWidth(SMALL_HEX_WIDTH);
   }
 }
