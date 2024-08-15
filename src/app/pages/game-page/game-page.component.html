@@ -12,6 +12,8 @@
     [gap]="gap$ | async"
     [hexWidth]="hexWidth$ | async"
     [gameState]="gameState$ | async"
+    [hexesToDelete]="(hexesToDelete$ | async)!"
+    [hexData]="(hexData$ | async)!"
   ></app-grid>
 
   <ng-container *ngIf="isInProgress$ | async">

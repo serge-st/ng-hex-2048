@@ -50,7 +50,7 @@ export class HexManagementService {
 
   // One method to set both, to trigger just one update loop
   setHexDataAndHexesToDelete(hexData: HexData[], hexesToDelete: HexData[]): void {
-    this.setState({ hexData: sortHexDataArray(hexData), hexesToDelete });
+    this.setState({ hexData: sortHexDataArray(hexData), hexesToDelete: sortHexDataArray(hexesToDelete) });
   }
 
   getHexData(): HexData[] {

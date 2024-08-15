@@ -8,7 +8,6 @@ import { GameOverControlComponent } from '@app/widgets/game-over-control';
 import { DesktopBreakpointDirective } from '@app/shared/directives';
 import { HexManagementService } from '@app/shared/services';
 import { isSameHexArray } from '@app/shared/helpers';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game-page',
@@ -36,16 +35,9 @@ export class GamePageComponent implements OnInit {
   constructor(
     private readonly gameSetupService: GameSetupService,
     private readonly hexManagementService: HexManagementService,
-    // TODO remove after testing
-    private readonly router: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    // TODO remove after testing
-    const path = this.router.snapshot.routeConfig?.path;
-    if (path === 'tl' || path === 'tw') return;
-    // TODO end
-
     this.setHexData();
   }
 

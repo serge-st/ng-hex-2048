@@ -6,3 +6,4 @@ export type { Direction, DirectionKey } from './direction';
 export type { HexAnimation } from './hex-animation';
 export type { ValueQuantityMap, ValueQuantityPair } from './value-quantity';
 export type { ColorType } from './colors-type';
+export type { NgChanges } from './ng-changes';

@@ -1,13 +1,10 @@
-import { Component, HostBinding, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, HostBinding, Input, OnChanges } from '@angular/core';
 import { HexagonComponent } from '@app/shared/components/UI';
 import { GridUtilStyleVariables, Position, HexData, HexCoord } from '@app/shared/interfaces';
 import { GridUtilityComponent } from '@app/shared/components';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { distinctUntilChanged, pairwise } from 'rxjs';
-import { HexManagementService } from '@app/shared/services';
-import { GameState } from '@app/shared/types';
-import { getCSSVariableString, isHexAEqualHexB, isSameHexArray } from '@app/shared/helpers';
+import { GameState, NgChanges } from '@app/shared/types';
+import { getCSSVariableString, isHexAEqualHexB } from '@app/shared/helpers';
 
 @Component({
   selector: 'app-grid',
@@ -21,17 +18,18 @@ export class GridComponent extends GridUtilityComponent implements OnChanges {
     return this.styleVariables ? getCSSVariableString(this.styleVariables) : undefined;
   }
 
+  // GameSetupService values
   @Input({ required: true }) radius!: number | null;
   @Input({ required: true }) gap!: number | null;
   @Input({ required: true }) hexWidth!: number | null;
   @Input({ required: true }) gameState!: GameState | null;
 
-  // hex data values
-  previousHexData: HexData[] = [];
-  hexData: HexData[] = [];
-  hexesToDelete: HexData[] = [];
+  // HexManagementService values
+  @Input() hexData: HexData[] = [];
+  @Input() hexesToDelete: HexData[] = [];
 
   // params calculated within the component
+  previousHexData: HexData[] = [];
   hexHeight!: number;
   gridWidth!: number;
   gridHeight!: number;
@@ -45,30 +43,25 @@ export class GridComponent extends GridUtilityComponent implements OnChanges {
     return this.gameState === 'setup';
   }
 
-  constructor(private readonly hexManagementService: HexManagementService) {
+  constructor() {
     super();
-
-    this.manageHexManagementServiceMainUpdates();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { radius } = changes;
+  ngOnChanges(changes: NgChanges<GridComponent>): void {
+    const { radius, gap, hexWidth, hexData: hexDataState } = changes;
+    const gridDimensionsChange = [radius, gap, hexWidth].some((el) => !!el);
+    const isNewRadius = !!radius;
 
-    this.updateProperies(!!radius);
+    gridDimensionsChange && this.updateProperies(isNewRadius);
+
+    if (!hexDataState || hexDataState.currentValue.length === 0) return;
+
+    this.processHexDataState(hexDataState);
   }
 
-  // TODO probably remove completely
-  private manageHexManagementServiceMainUpdates(): void {
-    this.hexManagementService.state$
-      .pipe(takeUntilDestroyed())
-      .pipe(distinctUntilChanged((prev, curr) => isSameHexArray(prev.hexData, curr.hexData)))
-      .pipe(pairwise())
-      .subscribe(([prevState, currState]) => {
-        this.previousHexData = prevState.hexData;
-        const hexDataWithAnimations = this.applyAnimations(currState.hexData);
-        this.hexesToDelete = currState.hexesToDelete;
-        this.hexData = hexDataWithAnimations;
-      });
+  private processHexDataState(hexDataState: NgChanges<GridComponent>['hexData']): void {
+    this.previousHexData = hexDataState.previousValue;
+    this.hexData = this.applyAnimations(hexDataState.currentValue);
   }
 
   trackByCoord(_index: number, hexCoord: HexCoord): string {
@@ -137,6 +130,17 @@ export class GridComponent extends GridUtilityComponent implements OnChanges {
     }
   }
 
+  applyAnimations(currState: HexData[]): HexData[] {
+    return currState.map((hex) => {
+      if (this.isNewHex(hex)) {
+        const newHex: HexData = { ...hex, animation: 'zoom-in' };
+        return newHex;
+      }
+
+      return this.updateExistingHex(hex);
+    });
+  }
+
   private isNewHex(hex: HexData): boolean {
     return !this.previousHexData.some((oldHex) => oldHex.id === hex.id);
   }
@@ -150,16 +154,5 @@ export class GridComponent extends GridUtilityComponent implements OnChanges {
     const nexHex: HexData = { ...hex, animation: didMerge ? 'merge' : 'move' };
 
     return nexHex;
-  }
-
-  applyAnimations(currState: HexData[]): HexData[] {
-    return currState.map((hex) => {
-      if (this.isNewHex(hex)) {
-        const newHex: HexData = { ...hex, animation: 'zoom-in' };
-        return newHex;
-      }
-
-      return this.updateExistingHex(hex);
-    });
   }
 }
