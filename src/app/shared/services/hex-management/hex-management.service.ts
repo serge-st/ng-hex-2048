@@ -48,6 +48,7 @@ export class HexManagementService {
     this.setState({ isLoading });
   }
 
+  // One method to set both, to trigger just one update loop
   setHexDataAndHexesToDelete(hexData: HexData[], hexesToDelete: HexData[]): void {
     this.setState({ hexData: sortHexDataArray(hexData), hexesToDelete });
   }
@@ -59,9 +60,8 @@ export class HexManagementService {
   private getNextHexID: ReturnType<typeof hexagonIDGenerator> = hexagonIDGenerator();
 
   private initializeHexIDGenerator(): void {
-    if (this.getState().hexData.length === 0) {
-      this.getNextHexID = hexagonIDGenerator();
-    }
+    if (this.getState().hexData.length !== 0) return;
+    this.getNextHexID = hexagonIDGenerator();
   }
 
   private transformIntoHexData(hexCoordWithValues: HexCoordWithValue[]): HexData[] {
