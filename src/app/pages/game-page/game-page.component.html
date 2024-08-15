@@ -14,9 +14,13 @@
     [gameState]="gameState$ | async"
   ></app-grid>
 
-  <ng-container *ngIf="!(isWin$ | async)">
+  <ng-container *ngIf="isInProgress$ | async">
     <h2>Game Controls</h2>
-    <app-game-control [radius]="(radius$ | async)!"></app-game-control>
+    <app-game-control
+      [radius]="(radius$ | async)!"
+      [isLoading]="(isLoading$ | async)!"
+      [hexData]="(hexData$ | async)!"
+    ></app-game-control>
     <article>
       <p *appShowOnDesktop="true">Click the buttons to move the hexagons, or use your keyboard keys</p>
 
