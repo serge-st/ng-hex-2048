@@ -1,6 +1,5 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { distinctUntilChanged } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { GameSetupService } from '@app/shared/services/game-setup';
 import { HexManagementService } from '@app/shared/services/hex-management';
 import { DIRECTION, DIRECTIONS } from '@app/shared/constants';
@@ -18,42 +17,38 @@ import { DesktopBreakpointDirective } from '@app/shared/directives';
   templateUrl: './game-control.component.html',
   styleUrl: './game-control.component.scss',
 })
-export class GameControlComponent implements OnChanges {
+export class GameControlComponent implements OnInit, OnDestroy {
   @Input({ required: true }) radius!: number;
-
-  hexData!: HexData[];
-  isLoading!: boolean;
-  isDesktop!: boolean;
+  @Input() isLoading = false;
+  @Input() hexData: HexData[] = [];
 
   get maxHexCount(): number {
     return 1 + 3 * this.radius * (this.radius + 1);
   }
 
-  ngOnChanges(): void {
-    // TODO: handle subscribtions properly
-    if (this.hexData.length === 0) this.setNextTurnHexData();
+  private hexManagementubscription: Subscription | undefined;
+
+  ngOnInit(): void {
+    this.unsubscribeHexManagement();
+    if (this.hexManagementService.getHexData().length === 0) {
+      this.hexManagementubscription = this.setNextTurnHexData();
+    }
+  }
+
+  private unsubscribeHexManagement(): void {
+    if (this.hexManagementubscription) {
+      this.hexManagementubscription.unsubscribe();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeHexManagement();
   }
 
   constructor(
     private readonly gameSetupService: GameSetupService,
     private readonly hexManagementService: HexManagementService,
-  ) {
-    this.hexManagementService.state$
-      .pipe(takeUntilDestroyed())
-      .pipe(distinctUntilChanged((prev, curr) => isSameHexArray(prev.hexData, curr.hexData)))
-      .subscribe((state) => {
-        this.hexData = state.hexData;
-
-        // if (state.hexData.length === 0) this.setNextTurnHexData();
-      });
-
-    this.hexManagementService.state$
-      .pipe(takeUntilDestroyed())
-      .pipe(distinctUntilChanged((prev, curr) => prev.isLoading === curr.isLoading))
-      .subscribe((state) => {
-        this.isLoading = state.isLoading;
-      });
-  }
+  ) {}
 
   move(directionKey: DirectionKey | undefined): void {
     if (!directionKey) return;
@@ -61,36 +56,23 @@ export class GameControlComponent implements OnChanges {
     this.performMove(DIRECTION[directionKey]);
   }
 
-  canMove(direction: Direction, hexDataArray: HexData[]): boolean {
-    return hexDataArray.some((hex) => {
-      const neighborCoord = this.getNeighborCoord(hex, direction);
-      return this.isHexInRange(neighborCoord) && !this.getHex(neighborCoord, hexDataArray);
-    });
-  }
+  performMove(direction: Direction): void {
+    let tempHexData: HexData[] = [...this.hexData];
+    let hexesToDelete: HexData[];
 
-  getNeighborCoord(hexA: HexCoord | HexData, direction: Direction): HexCoord {
-    return this.addHexCoord(hexA, DIRECTIONS[direction]);
-  }
+    tempHexData = this.processMove(direction, tempHexData);
+    [tempHexData, hexesToDelete] = this.processMerge(direction, tempHexData);
+    tempHexData = this.processMove(direction, tempHexData);
+    tempHexData = sortHexDataArray(tempHexData);
 
-  addHexCoord(hexA: HexCoord | HexData, hexB: HexCoord | HexData): HexCoord {
-    return {
-      q: hexA.q + hexB.q,
-      r: hexA.r + hexB.r,
-      s: hexA.s + hexB.s,
-    };
-  }
+    const isSameHexData = isSameHexArray(tempHexData, this.hexData);
 
-  isHexInRange(hex: HexCoord | HexData): boolean {
-    const hexCoordKeys: HexCoordKey[] = ['q', 's', 'r'];
-    const hasViolatedRange = hexCoordKeys.some((key) => Math.abs(hex[key]) > this.radius);
+    if (isSameHexData) return;
 
-    return !hasViolatedRange;
-  }
-
-  getHex(hexCoord: HexCoord | HexData, hexDataArray: HexData[]): HexData | undefined {
-    return hexDataArray.find((hexData) => {
-      return isHexAEqualHexB(hexData, hexCoord);
-    });
+    this.setNextTurnHexData(
+      tempHexData,
+      hexesToDelete.map<HexData>((hex) => ({ ...hex, animation: 'delete' })),
+    );
   }
 
   processMove(direction: Direction, hexDataArray: HexData[]): HexData[] {
@@ -122,6 +104,38 @@ export class GameControlComponent implements OnChanges {
         return newHex;
       }),
     );
+  }
+
+  canMove(direction: Direction, hexDataArray: HexData[]): boolean {
+    return hexDataArray.some((hex) => {
+      const neighborCoord = this.getNeighborCoord(hex, direction);
+      return this.isHexInRange(neighborCoord) && !this.getHex(neighborCoord, hexDataArray);
+    });
+  }
+
+  getNeighborCoord(hexA: HexCoord | HexData, direction: Direction): HexCoord {
+    return this.addHexCoord(hexA, DIRECTIONS[direction]);
+  }
+
+  getHex(hexCoord: HexCoord | HexData, hexDataArray: HexData[]): HexData | undefined {
+    return hexDataArray.find((hexData) => {
+      return isHexAEqualHexB(hexData, hexCoord);
+    });
+  }
+
+  isHexInRange(hex: HexCoord | HexData): boolean {
+    const hexCoordKeys: HexCoordKey[] = ['q', 's', 'r'];
+    const hasViolatedRange = hexCoordKeys.some((key) => Math.abs(hex[key]) > this.radius);
+
+    return !hasViolatedRange;
+  }
+
+  addHexCoord(hexA: HexCoord | HexData, hexB: HexCoord | HexData): HexCoord {
+    return {
+      q: hexA.q + hexB.q,
+      r: hexA.r + hexB.r,
+      s: hexA.s + hexB.s,
+    };
   }
 
   processMerge(direction: Direction, hexDataArray: HexData[]): MergeResult {
@@ -172,14 +186,14 @@ export class GameControlComponent implements OnChanges {
     ).flatMap((vqPair) => (vqPair[1] > 1 ? vqPair[0] : []));
   }
 
-  isGameOver(): void {
-    if (this.hexData.length !== this.maxHexCount) return;
+  isGameOver(hexData: HexData[]): boolean {
+    if (hexData.length !== this.maxHexCount) return false;
 
     const duplicateHexValues = this.getDuplicateHexValues();
 
-    if (!duplicateHexValues.length) return this.gameSetupService.setGameState('game-over');
+    if (!duplicateHexValues.length) return true;
 
-    const potentialMergeHexes = this.hexData.filter((hex) => duplicateHexValues.includes(hex.value));
+    const potentialMergeHexes = hexData.filter((hex) => duplicateHexValues.includes(hex.value));
 
     const canMerge = potentialMergeHexes.some((hex) => {
       const neighborCoords = Object.values(DIRECTION)
@@ -193,39 +207,23 @@ export class GameControlComponent implements OnChanges {
       return neighbors.some((neighbor) => neighbor && neighbor.value === hex.value);
     });
 
-    if (!canMerge) return this.gameSetupService.setGameState('game-over');
+    return canMerge;
   }
 
   isWin(hexData: HexData[]): boolean {
     return hexData.some((hex) => hex.value === 2048);
   }
 
-  performMove(direction: Direction): void {
-    let localHexData = [...this.hexData];
-    let hexesToDelete: HexData[];
+  setNextTurnHexData(thisTurnHexData: HexData[] = [], hexesToDelete: HexData[] = []): Subscription {
+    this.unsubscribeHexManagement();
 
-    localHexData = this.processMove(direction, localHexData);
-    [localHexData, hexesToDelete] = this.processMerge(direction, localHexData);
-    localHexData = this.processMove(direction, localHexData);
-    localHexData = sortHexDataArray(localHexData);
+    return this.hexManagementService.getNewHexCoords(this.radius, thisTurnHexData).subscribe((newHexData) => {
+      const nextTurnHexData = [...thisTurnHexData, ...newHexData];
 
-    const isSameHexData = isSameHexArray(localHexData, this.hexData);
-
-    if (isSameHexData) return;
-
-    this.setNextTurnHexData(
-      localHexData,
-      hexesToDelete.map<HexData>((hex) => ({ ...hex, animation: 'delete' })),
-    );
-  }
-
-  setNextTurnHexData(thisTurnHexData: HexData[] = [], hexesToDelete: HexData[] = []): void {
-    this.hexManagementService.getNewHexCoords(this.radius, thisTurnHexData).subscribe((newHexData) => {
-      this.hexManagementService.setHexDataAndHexesToDelete(thisTurnHexData.concat(newHexData), hexesToDelete);
+      this.hexManagementService.setHexDataAndHexesToDelete(nextTurnHexData, hexesToDelete);
 
       if (this.isWin(thisTurnHexData)) return this.gameSetupService.setGameState('win');
-
-      this.isGameOver();
+      if (this.isGameOver(nextTurnHexData)) return this.gameSetupService.setGameState('game-over');
     });
   }
 }
