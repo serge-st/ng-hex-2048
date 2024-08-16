@@ -2,3 +2,4 @@ export { HexagonComponent } from './hexagon/hexagon.component';
 export { NumberInputComponent } from './number-input/number-input.component';
 export { ButtonComponent } from './button/button.component';
 export { LinkComponent } from './link/link.component';
+export { SvgIconComponent } from './svg-icon/svg-icon.component';

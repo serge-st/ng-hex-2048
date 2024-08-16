@@ -9,11 +9,12 @@ import { Direction, DirectionKey, HexCoordKey, ValueQuantityMap, ValueQuantityPa
 import { MergeResult } from './types';
 import { ControlButtonComponent } from '../control-button/';
 import { DesktopBreakpointDirective } from '@app/shared/directives';
+import { SvgIconComponent } from '@app/shared/components/UI';
 
 @Component({
   selector: 'app-game-control',
   standalone: true,
-  imports: [ControlButtonComponent, DesktopBreakpointDirective],
+  imports: [ControlButtonComponent, DesktopBreakpointDirective, SvgIconComponent],
   templateUrl: './game-control.component.html',
   styleUrl: './game-control.component.scss',
 })

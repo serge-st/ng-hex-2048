@@ -13,3 +13,35 @@
   align-items: center;
   justify-content: center;
 }
+
+.icon {
+  background-color: var(--bs-color);
+}
+
+.icon.disabled {
+  background-color: var(--dsbld-color);
+}
+
+.icon.top-left {
+  transform: rotate(-135deg);
+}
+
+.icon.top {
+  transform: rotate(-90deg);
+}
+
+.icon.top-right {
+  transform: rotate(-45deg);
+}
+
+.icon.bottom-left {
+  transform: rotate(135deg);
+}
+
+.icon.bottom {
+  transform: rotate(90deg);
+}
+
+.icon.bottom-right {
+  transform: rotate(45deg);
+}
