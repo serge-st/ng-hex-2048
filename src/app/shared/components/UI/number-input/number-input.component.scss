@@ -2,8 +2,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-
-  --error-color: #dc3545;
 }
 
 label {
@@ -14,7 +12,6 @@ label {
 input {
   padding: 6px 12px;
   line-height: 1.5;
-  color: #212529;
   border: 1px solid #dee2e6;
   transition:
     border-color 0.15s ease-in-out,
@@ -22,7 +19,7 @@ input {
 }
 
 input.error {
-  border-color: var(--error-color);
+  border-color: var(--app-error-color);
 }
 
 input:focus {
@@ -32,7 +29,7 @@ input:focus {
 }
 
 input.error:focus {
-  border-color: var(--error-color);
+  border-color: var(--app-error-color);
   box-shadow: 0 0 0 4px rgb(220 53 69 / 25%);
 }
 
@@ -46,5 +43,5 @@ input.error:focus {
   bottom: calc((var(--app-padding-medium) + 2px) * -1);
   display: block;
   font-size: 10px;
-  color: var(--error-color);
+  color: var(--app-error-color);
 }
