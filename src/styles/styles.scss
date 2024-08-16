@@ -1,3 +1,13 @@
-@import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap';
 @import './reset/style-reset';
 @import './variables/variables';
+
+body {
+  margin: 0;
+  font-family: -apple-system, Inter, Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+}
