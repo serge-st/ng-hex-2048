@@ -28,6 +28,7 @@ export class DesktopBreakpointDirective {
 
   processBreakpointChange() {
     if (this.isDesktop === this.appShowOnDesktop) {
+      this.viewContainer.clear();
       this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
       this.viewContainer.clear();
