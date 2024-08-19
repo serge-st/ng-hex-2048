@@ -31,7 +31,7 @@ Here `HTML` is used to display hexagons on a grid, where each hexagon is a separ
 
 ![Hexagon HTML](./.github/images//hex_html.png)
 
-To move the game forward the application uses HTML requests, just like any other web app.
+To move the game forward the application uses HTTP requests, just like any other web app.
 
 ```js
 fetch('http://localhost:3000/hex-grid-management/1', {
